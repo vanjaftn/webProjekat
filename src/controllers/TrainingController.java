@@ -13,6 +13,7 @@ import beans.Training;
 import beans.TrainingType;
 import dto.FacilitySearchDTO;
 import dto.FacilitySortDTO;
+import dto.TrainingFilterDTO;
 import dto.TrainingSortDTO;
 import services.FacilityService;
 import services.TrainingService;
@@ -219,11 +220,21 @@ public class TrainingController {
 				return null;
 			}
 		});
-		post("/sortTrainings", (req, res) -> {
+		post("/sortTrainingsTrainer", (req, res) -> {
 			res.type("application/json");
 			try {
 				TrainingSortDTO sortParameters = gson.fromJson(req.body(), TrainingSortDTO.class);
-				return  gson.toJson(trainingService.getSortedTrainings(sortParameters));
+				return  gson.toJson(trainingService.getSortedTrainingsTrainer(sortParameters));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		post("/sortTrainingsCustomer", (req, res) -> {
+			res.type("application/json");
+			try {
+				TrainingSortDTO sortParameters = gson.fromJson(req.body(), TrainingSortDTO.class);
+				return  gson.toJson(trainingService.getSortedTrainingsCustomer(sortParameters));
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;
@@ -234,6 +245,76 @@ public class TrainingController {
 			try {
 				String trainer = req.queryParams("trainer");
 				return gson.toJson(trainingService.getGymFacilityTrainingsTrainer(trainer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getPoolFacilityTrainingsTrainer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String trainer = req.queryParams("trainer");
+				return gson.toJson(trainingService.getPoolFacilityTrainingsTrainer(trainer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getDanceFacilityTrainingsTrainer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String trainer = req.queryParams("trainer");
+				return gson.toJson(trainingService.getDanceFacilityTrainingsTrainer(trainer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getSportsFacilityTrainingsTrainer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String customer = req.queryParams("customer");
+				return gson.toJson(trainingService.getSportsFacilityTrainingsCustomer(customer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getGymFacilityTrainingsCustomer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String customer = req.queryParams("customer");
+				return gson.toJson(trainingService.getGymFacilityTrainingsCustomer(customer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getPoolFacilityTrainingsCustomer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String customer = req.queryParams("customer");
+				return gson.toJson(trainingService.getPoolFacilityTrainingsCustomer(customer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getDanceFacilityTrainingsCustomer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String customer = req.queryParams("customer");
+				return gson.toJson(trainingService.getDanceFacilityTrainingsCustomer(customer));
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		get("/getSportsFacilityTrainingsCustomer", (req, res) -> {
+			res.type("application/json");
+			try {
+				String customer = req.queryParams("customer");
+				return gson.toJson(trainingService.getSportsFacilityTrainingsCustomer(customer));
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;

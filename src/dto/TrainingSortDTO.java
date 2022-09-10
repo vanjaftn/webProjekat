@@ -1,24 +1,38 @@
 package dto;
 
+import java.util.ArrayList;
+
+import beans.Training;
+
 public class TrainingSortDTO {
 		
 		private String mode;
 		private String parameter;
-		private String trainer;
+		private String name;
+		private ArrayList<Training> trainings;
 		
-		public TrainingSortDTO(String mode, String parameter, String trainer) {
+		public TrainingSortDTO(String mode, String parameter, String name, ArrayList<Training> trainings) {
 			super();
 			this.mode = mode;
 			this.parameter = parameter;
-			this.trainer = trainer;
+			this.name = name;
+			this.trainings = trainings;
 		}
 
-		public String getTrainerName() {
-			return trainer;
+		public ArrayList<Training> getTrainings() {
+			return trainings;
 		}
 
-		public void setTrainerName(String trainer) {
-			this.trainer = trainer;
+		public void setTrainings(ArrayList<Training> trainings) {
+			this.trainings = trainings;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
 		}
 
 		public String getMode() {

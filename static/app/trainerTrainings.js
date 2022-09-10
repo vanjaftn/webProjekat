@@ -32,6 +32,12 @@ Vue.component("trainerTrainings", {
 										<label style="color: black;">Filter by facility type</label></br>
 										<input type="radio" name = "filter" @change="OnlyGymFacilityType($event)">
 										<label style="color: black;">Gym</label></br>	
+										<input type="radio" name = "filter" @change="OnlyDanceFacilityType($event)">
+										<label style="color: black;">Dance Studio</label></br>	
+										<input type="radio" name = "filter" @change="OnlySportsFacilityType($event)">
+										<label style="color: black;">Sports Facility</label></br>	
+										<input type="radio" name = "filter" @change="OnlyPoolFacilityType($event)">
+										<label style="color: black;">Pool</label></br>	
 													
 								</div>
 <!-- .............................................SORT TRAININGS..............................................................................-->
@@ -127,17 +133,54 @@ Vue.component("trainerTrainings", {
 		})
 		
 		},
+		OnlyDanceFacilityType: function(event){
+			axios
+				.get('/getDanceFacilityTrainingsTrainer',
+					{ params: {
+						trainer: this.trainer.name,
+					}})
+					.then(response => {
+					this.trainings = response.data
+					console.log(this.trainings)
+		})
+		
+		},
+		OnlySportsFacilityType: function(event){
+			axios
+				.get('/getSportsFacilityTrainingsTrainer',
+					{ params: {
+						trainer: this.trainer.name,
+					}})
+					.then(response => {
+					this.trainings = response.data
+					console.log(this.trainings)
+		})
+		
+		},
+		OnlyPoolFacilityType: function(event){
+			axios
+				.get('/getPoolFacilityTrainingsTrainer',
+					{ params: {
+						trainer: this.trainer.name,
+					}})
+					.then(response => {
+					this.trainings = response.data
+					console.log(this.trainings)
+		})
+		
+		},
 		sortTrainings: function(event) {
 		
 			let sortParameters =
 			{
 				parameter : this.parameter,
 				mode : this.mode,
-				trainer : this.trainer.name
+				trainings : this.trainings,
+				name : this.trainer.username
 			}
 			
 			axios
-				.post('/sortTrainings', JSON.stringify(sortParameters))
+				.post('/sortTrainingsTrainer', JSON.stringify(sortParameters))
 					.then(response => {
 					this.trainings = response.data
 					console.log(this.trainings)
@@ -153,17 +196,19 @@ Vue.component("trainerTrainings", {
 		},
 		SortByFacilityAsc: function() {
 			
-			this.parameter = "facilityType"
+			this.parameter = "facility"
 			this.mode = "asc"
 		},
 		SortByFacilityDesc: function() {
 			
-			this.parameter = "facilityType"
+			this.parameter = "facility"
 			this.mode = "desc"
 		}
 		
 	}, 
 	mounted () {
+		console.log(this.jwt)
+		console.log(this.role)
         
         axios
 				.get('/getTrainer',

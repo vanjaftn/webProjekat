@@ -10,10 +10,14 @@ import com.google.gson.JsonSyntaxException;
 import beans.Customer;
 import beans.Facility;
 import beans.FacilityType;
+import beans.Trainer;
 import beans.Training;
 import beans.TrainingType;
+import dao.CustomerDAO;
 import dao.FacilityDAO;
+import dao.TrainerDAO;
 import dao.TrainingDAO;
+import dto.TrainingFilterDTO;
 import dto.TrainingSortDTO;
 
 public class TrainingService {
@@ -22,6 +26,10 @@ public class TrainingService {
 	private static Gson gson = new Gson();
 	private FacilityDAO facilityDAO = new FacilityDAO("./data/facilities.json");
 	private FacilityService facilityService = new FacilityService(facilityDAO);
+	private TrainerDAO trainerDAO = new TrainerDAO("./data/trainers.json");
+	private TrainerService trainerService = new TrainerService(trainerDAO);
+	private CustomerDAO customerDAO = new CustomerDAO("./data/customer.json");
+	private CustomerService customerService = new CustomerService(customerDAO);
 	
 	public TrainingService(TrainingDAO trainingDAO) {
 		super();
@@ -226,15 +234,32 @@ public class TrainingService {
 		return groupTrainings;
 	}
 	
-	public ArrayList<Training> getSortedTrainings(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
-		ArrayList<Training> sortedTrainings = getTrainerTrainings(sortParameter.getTrainerName());
+	public ArrayList<Training> getSortedTrainingsTrainer(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
+		
+		ArrayList<Training> sortedTrainings = getTrainerTrainings(sortParameter.getName());
 
 		if(sortParameter.getParameter().equals("price"))
 			if(sortParameter.getMode().equals("asc"))
 				sortedTrainings.sort((o1, o2) -> Integer.compare(o1.getPrice(), o2.getPrice()));
 			if(sortParameter.getMode().equals("desc"))
 				sortedTrainings.sort((o1, o2) -> Integer.compare(o2.getPrice(), o1.getPrice()));
-		if(sortParameter.getParameter().equals("facilityType"))
+		if(sortParameter.getParameter().equals("facility"))
+			if(sortParameter.getMode().equals("asc"))
+				sortedTrainings.sort((o1, o2)-> o1.getSportsFacility().compareTo(o2.getSportsFacility()));
+			if(sortParameter.getMode().equals("desc"))
+				sortedTrainings.sort((o1, o2)-> o2.getSportsFacility().compareTo(o1.getSportsFacility()));
+		return sortedTrainings;
+	}
+public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
+		
+		ArrayList<Training> sortedTrainings = getCustomerTrainings(sortParameter.getName());
+
+		if(sortParameter.getParameter().equals("price"))
+			if(sortParameter.getMode().equals("asc"))
+				sortedTrainings.sort((o1, o2) -> Integer.compare(o1.getPrice(), o2.getPrice()));
+			if(sortParameter.getMode().equals("desc"))
+				sortedTrainings.sort((o1, o2) -> Integer.compare(o2.getPrice(), o1.getPrice()));
+		if(sortParameter.getParameter().equals("facility"))
 			if(sortParameter.getMode().equals("asc"))
 				sortedTrainings.sort((o1, o2)-> o1.getSportsFacility().compareTo(o2.getSportsFacility()));
 			if(sortParameter.getMode().equals("desc"))
@@ -255,6 +280,104 @@ public class TrainingService {
 		}
 		
 		return gymTrainings;
+	}
+	public ArrayList<Training> getPoolFacilityTrainingsTrainer(String trainerName) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getTrainerTrainings(trainerName);
+		ArrayList<Training> poolTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Pool"))
+				{
+					poolTrainings.add(t);
+				}
+		}
+		
+		return poolTrainings;
+	}
+	public ArrayList<Training> getDanceFacilityTrainingsTrainer(String trainerName) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getTrainerTrainings(trainerName);
+		ArrayList<Training> danceTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Dance Studio"))
+				{
+					danceTrainings.add(t);
+				}
+		}
+		
+		return danceTrainings;
+	}
+	public ArrayList<Training> getSportsFacilityTrainingsTrainer(String trainerName) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getTrainerTrainings(trainerName);
+		ArrayList<Training> sportsTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Sports Facility"))
+				{
+					sportsTrainings.add(t);
+				}
+		}
+		
+		return sportsTrainings;
+	}
+	public ArrayList<Training> getGymFacilityTrainingsCustomer(String name) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getCustomerTrainings(name);
+		ArrayList<Training> gymTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Gym"))
+				{
+					gymTrainings.add(t);
+				}
+		}
+		
+		return gymTrainings;
+	}
+	public ArrayList<Training> getPoolFacilityTrainingsCustomer(String name) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getCustomerTrainings(name);
+		ArrayList<Training> poolTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Pool"))
+				{
+					poolTrainings.add(t);
+				}
+		}
+		
+		return poolTrainings;
+	}
+	public ArrayList<Training> getDanceFacilityTrainingsCustomer(String name) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getCustomerTrainings(name);
+		ArrayList<Training> danceTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Dance Studio"))
+				{
+					danceTrainings.add(t);
+				}
+		}
+		
+		return danceTrainings;
+	}
+	public ArrayList<Training> getSportsFacilityTrainingsCustomer(String name) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getCustomerTrainings(name);
+		ArrayList<Training> sportsTrainings = new ArrayList<Training>();
+		
+		for(Training t : trainings) {
+			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
+			if(facility.getType().equals("Sports Facility"))
+				{
+					sportsTrainings.add(t);
+				}
+		}
+		
+		return sportsTrainings;
 	}
 	
 }
