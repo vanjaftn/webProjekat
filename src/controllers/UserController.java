@@ -5,13 +5,14 @@ import static spark.Spark.post;
 import java.util.ArrayList;
 
 import static spark.Spark.get;
-
+import static spark.Spark.put;
 
 import com.google.gson.Gson;
 
 import beans.User;
 import dto.LoginDTO;
 import dto.UserSearchDTO;
+import dto.UserSortDTO;
 import services.UserService;
 import spark.Session;
 
@@ -131,6 +132,84 @@ public class UserController {
 				s.attribute("user", editedUser);
 				return gson.toJson(editedUser);
 			}catch (Exception e) {
+				return "";
+			}
+		});
+		
+		put("/user/deleteUser/:id", (req, res) -> {
+			res.type("application/json");
+			try {
+				User user = userService.getUser(req.params("id"));
+				user.setDeleted(true);
+				userService.editUser(user);
+				return gson.toJson(userService.getAllNonDeleted());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		
+		post("/user/sortUsers", (req,res) -> {
+			res.type("application/json");
+			try {
+				UserSortDTO sortParams = gson.fromJson(req.body(), UserSortDTO.class);
+				ArrayList<User> users = userService.getSortedUsers(sortParams);
+				return gson.toJson(users);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		});
+		
+		post("/users/getAllAdmins", (req, res) -> {
+			res.type("application/json");
+			try {
+				UserSortDTO sortParams = gson.fromJson(req.body(), UserSortDTO.class);
+				ArrayList<User> users = userService.getAllAdmins(sortParams);
+				return gson.toJson(users);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		post("/users/getAllMAnagers", (req, res) -> {
+			res.type("application/json");
+			try {
+				UserSortDTO sortParams = gson.fromJson(req.body(), UserSortDTO.class);
+				ArrayList<User> users = userService.getAllManagers(sortParams);
+				return gson.toJson(users);
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		post("/users/getAllTrainers", (req, res) -> {
+			res.type("application/json");
+			try {
+				UserSortDTO sortParams = gson.fromJson(req.body(), UserSortDTO.class);
+				ArrayList<User> users = userService.getAllTrainers(sortParams);
+				return gson.toJson(users);
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
+		post("/users/getAllCustomers", (req, res) -> {
+			res.type("application/json");
+			try {
+				UserSortDTO sortParams = gson.fromJson(req.body(), UserSortDTO.class);
+				ArrayList<User> users = userService.getAllCustomers(sortParams);
+				return gson.toJson(users);
+			
+			} catch (Exception e) {
+				e.printStackTrace();
 				return "";
 			}
 		});

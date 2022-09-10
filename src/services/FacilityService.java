@@ -22,11 +22,14 @@ public class FacilityService {
 	}
 	
 	public ArrayList<Facility> getAll() throws JsonSyntaxException, IOException{
-		return facilityDAO.getAll();
+		ArrayList<Facility> allFacilities = new ArrayList<Facility>();
+		allFacilities.addAll(getOpenedFacilities());
+		allFacilities.addAll(getClosedFacilities());
+		return allFacilities;
 	}
 	
 	public ArrayList<Facility> getSortedFacilities(FacilitySortDTO sortParameters) throws JsonSyntaxException, IOException {
-		ArrayList<Facility> sortedFacilities = getAll();
+		ArrayList<Facility> sortedFacilities = sortParameters.getFacilities();
 		
 		if(sortParameters.getParameter().equals("name"))
 			if(sortParameters.getMode().equals("asc"))
@@ -61,9 +64,9 @@ public class FacilityService {
 	}
 	
 	public ArrayList<Facility> getSearchedFacilities(FacilitySearchDTO searchParameters) throws JsonSyntaxException, IOException{
-		ArrayList<Facility> allFacilities = getAll();
-		ArrayList<Facility> searchedFacilities = getAll();
-		
+		ArrayList<Facility> allFacilities = searchParameters.getFacilities();
+		ArrayList<Facility> searchedFacilities = new ArrayList<Facility>();
+	
 		if (!searchParameters.getName().trim().isEmpty()) {
 			searchedFacilities.clear();
 			for (Facility facility : allFacilities) {
@@ -124,6 +127,14 @@ public class FacilityService {
 		return openedFacilities;
 	}
 	
+	public ArrayList<Facility> getClosedFacilities() throws JsonSyntaxException, IOException {
+		ArrayList<Facility> closedFacilities = new ArrayList<Facility>();
+		for(Facility facility : facilityDAO.getAllNonDeleted())
+			if(facility.getStatus().equals(FacilityStatus.CLOSED))
+				closedFacilities.add(facility);
+		return closedFacilities;
+	}
+	
 	public void createFacility(Facility facility) throws JsonSyntaxException, IOException{
 		String path = "images/" + facility.getName() + ".jpg";
 		decoder.ImportImage(facility.getImage(), path);
@@ -135,5 +146,21 @@ public class FacilityService {
 	public Facility getFacilityByName(String facilityName) throws JsonSyntaxException, IOException{
 		return facilityDAO.getByID(facilityName);
 	}	
+	
+	public void updateFacilityGrade(String facilityName, double newGrade) throws JsonSyntaxException, IOException {
+		Facility facility = facilityDAO.getByID(facilityName);
+		facility.setRating(newGrade);
+		facilityDAO.update(facility);
+	}
+	
+	public ArrayList<Facility> getAllOpend(FacilitySortDTO sortParams) throws JsonSyntaxException, IOException {
+		ArrayList<Facility> openedFacilities = new ArrayList<Facility>();
+		for(Facility facility : sortParams.getFacilities()) {
+			if(facility.getStatus().equals(FacilityStatus.OPEN)) {
+				openedFacilities.add(facility);
+			}
+		}
+		return openedFacilities;
+	}
 	
 }

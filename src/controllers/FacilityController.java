@@ -120,6 +120,18 @@ public class FacilityController {
 			}
 		
 		});
+		
+		post("/facilities/getOpenedFacilities", (req, res) -> {
+			res.type("application/json");
+			try {
+				FacilitySortDTO sortParams = gson.fromJson(req.body(), FacilitySortDTO.class);
+				ArrayList<Facility> facilities = facilityService.getAllOpend(sortParams);
+				return gson.toJson(facilities);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 
 	}
 	

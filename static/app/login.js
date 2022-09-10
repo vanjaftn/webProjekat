@@ -93,8 +93,9 @@ Vue.component("login-page", {
     				if(response.status == "200") {
 		 				if (response.data == "") {
 	    					this.errorMessage = "invalid username or password"
-	    				}
-	    				else{
+	    				} else if(response.data.isDeleted){
+		    				this.errorMessage = "Your account has been deleted."
+						} else {
 	    					localStorage.setItem('jwt', JSON.parse(JSON.stringify(response.data))[0]);
 			            	localStorage.setItem("role", JSON.parse(JSON.stringify(response.data))[1]);
 			            	alert("Success!")
