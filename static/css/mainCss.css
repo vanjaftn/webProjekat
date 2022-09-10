@@ -1,0 +1,13 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	position: relative;
+	background-color: #dcdff5;
+	background-size: contain;
+	background-repeat: no-repeat;
+	height: 100vh;
+	box-sizing: content-box;
+}

@@ -1,0 +1,145 @@
+root { -
+	-max-width: 1120px; -
+	-borderRadius: 0.25rem; -
+	-primary-500: #645cff; -
+	-grey-600: #475569; -
+	-white: #fff;
+}
+
+.page {
+	width: 90vw;
+	max-width: 1120px;
+	margin: 0 auto;
+}
+
+.page {
+	padding-top: 2rem;
+	min-height: calc(100vh - ( 6rem + 4rem));
+}
+
+.facility-hero {
+	display: grid;
+	gap: 3rem;
+}
+
+.facility-hero article {
+	background-color: #fff;
+	padding: 1rem;
+	border-radius: 0.25rem;
+}
+
+.facility-hero-img {
+	height: 300px;
+	border-radius: 0.25rem;
+}
+
+.facility-hero p {
+	color: #475569;
+}
+
+.facility-icons {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	margin: 2rem 0;
+	text-align: center;
+}
+
+.facility-icons i {
+	font-size: 1.5rem;
+	color: #645cff;
+}
+
+.facility-icons h5 {
+	margin-bottom: 0;
+	font-size: 0.85rem;
+}
+
+.facility-tags {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	font-size: 0.7rem;
+	font-weight: 600;
+}
+
+.facility-tags a {
+	background: #645cff;
+	border-radius: 0.25rem;
+	color: #fff;
+	padding: 0.05rem 0.5rem;
+	margin: 0 0.25rem;
+	text-transform: capitalize;
+}
+
+@media screen and (min-width:992px) {
+	.facility-hero {
+		grid-template-columns: 4fr 5fr;
+		align-items: center;
+	}
+}
+
+.facility-content {
+	padding: 3rem 0;
+	display: grid;
+	gap: 2rem 5rem;
+}
+
+.article-content {
+	background-color: #fff;
+	padding: 1rem;
+	border-radius: 0.25rem;
+}
+
+@media screen and (min-width: 992px) {
+	.facility-content {
+		grid-template-columns: 2fr 1fr;
+	}
+}
+
+.single-training header {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 1.5rem;
+	align-items: center;
+}
+
+.single-training header p {
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #645cff;
+	margin-bottom: 0;
+}
+
+.single-training>p {
+	color: #475569;
+}
+
+.single-training header div {
+	height: 2px;
+	background: #cbd5e1;
+}
+
+.second-column {
+	display: grid;
+	row-gap: 2rem;
+}
+
+.second-column-content {
+	background-color: #fff;
+	padding: 1rem;
+	border-radius: 0.25rem;
+}
+
+.single-comment {
+	border-bottom: 2px solid var(- -grey-300);
+	padding-bottom: 0.75rem;
+	color: var(- -grey-700);
+}
+
+.single-tool {
+	border-bottom: 2px solid var(- -grey-300);
+	padding-bottom: 0.75rem;
+	color: #645cff;
+	text-transform: capitalize;
+}

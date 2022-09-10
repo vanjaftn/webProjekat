@@ -1,0 +1,14 @@
+.login-container {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.passwordIcon {
+	float: right;
+	margin-right: 6px;
+	margin-top: -26px;
+	position: relative;
+	z-index: 2;
+}
