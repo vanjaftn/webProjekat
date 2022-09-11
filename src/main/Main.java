@@ -13,6 +13,7 @@ import controllers.ManagerController;
 import controllers.MembershipController;
 import controllers.TrainerController;
 import controllers.TrainingController;
+import controllers.TrainingHistoryController;
 import controllers.UserController;
 import dao.CommentDAO;
 import dao.CustomerDAO;
@@ -21,6 +22,7 @@ import dao.ManagerDAO;
 import dao.MembershipDAO;
 import dao.TrainerDAO;
 import dao.TrainingDAO;
+import dao.TrainingHistoryDAO;
 import dao.UserDAO;
 import services.CommentService;
 import services.CustomerService;
@@ -28,13 +30,14 @@ import services.FacilityService;
 import services.ManagerService;
 import services.MembershipService;
 import services.TrainerService;
+import services.TrainingHistoryService;
 import services.TrainingService;
 import services.UserService;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		port(8087);
+		port(8080);
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath()); 
 		
@@ -74,5 +77,9 @@ public class Main {
 		MembershipService membershipService = new MembershipService(membershipDAO);
 		MembershipController membershipController = new MembershipController(membershipService);
 	
+		TrainingHistoryDAO trainingHistoryDAO = new TrainingHistoryDAO("./data/trainingHistory.json");
+		TrainingHistoryService trainingHistoryService = new TrainingHistoryService(trainingHistoryDAO);
+		TrainingHistoryController trainingHistoryController = new TrainingHistoryController(trainingHistoryService);
+		
 	}
 }

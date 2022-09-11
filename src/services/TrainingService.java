@@ -12,11 +12,13 @@ import beans.Facility;
 import beans.FacilityType;
 import beans.Trainer;
 import beans.Training;
+import beans.TrainingHistory;
 import beans.TrainingType;
 import dao.CustomerDAO;
 import dao.FacilityDAO;
 import dao.TrainerDAO;
 import dao.TrainingDAO;
+import dao.TrainingHistoryDAO;
 import dto.TrainingFilterDTO;
 import dto.TrainingSortDTO;
 
@@ -30,6 +32,8 @@ public class TrainingService {
 	private TrainerService trainerService = new TrainerService(trainerDAO);
 	private CustomerDAO customerDAO = new CustomerDAO("./data/customer.json");
 	private CustomerService customerService = new CustomerService(customerDAO);
+	private TrainingHistoryDAO trainingHistoryDAO = new TrainingHistoryDAO("./data/trainingHistory.json");
+	//private TrainingHistoryService trainingHistory = new TrainingHistoryService(trainingHistoryDAO);
 	
 	public TrainingService(TrainingDAO trainingDAO) {
 		super();
@@ -85,14 +89,18 @@ public class TrainingService {
 		}
 		return trainerTrainings;
 	}
+	public Training getTrainingByName(String trainingName) throws JsonSyntaxException, IOException{
+		return trainingDAO.getByID(trainingName);	
+	}
 	public ArrayList<Training> getCustomerTrainings(String CustomerName)throws JsonSyntaxException, IOException{
 		
-		ArrayList<Training> trainings = trainingDAO.getAll();
+		ArrayList<TrainingHistory> trainingsHistory = trainingHistoryDAO.getAll();
 		ArrayList<Training> customerTrainings = new ArrayList<Training>();
 
-		for(Training t : trainings) {
-				if(t.getCustomers().equals(CustomerName))
-				customerTrainings.add(t);
+		for(TrainingHistory t : trainingsHistory) {
+			Training training = getTrainingByName(t.getTraining());
+				if(t.getCustomer().equals(CustomerName))
+				customerTrainings.add(training);
 			}
 		
 		return customerTrainings;
@@ -236,7 +244,7 @@ public class TrainingService {
 	
 	public ArrayList<Training> getSortedTrainingsTrainer(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
 		
-		ArrayList<Training> sortedTrainings = getTrainerTrainings(sortParameter.getName());
+		ArrayList<Training> sortedTrainings = sortParameter.getTrainings();
 
 		if(sortParameter.getParameter().equals("price"))
 			if(sortParameter.getMode().equals("asc"))
@@ -252,7 +260,7 @@ public class TrainingService {
 	}
 public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
 		
-		ArrayList<Training> sortedTrainings = getCustomerTrainings(sortParameter.getName());
+		ArrayList<Training> sortedTrainings = sortParameter.getTrainings();
 
 		if(sortParameter.getParameter().equals("price"))
 			if(sortParameter.getMode().equals("asc"))

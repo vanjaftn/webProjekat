@@ -1,15 +1,18 @@
 Vue.component("f-page", {
 	data: function () {
 		return {
-			facility: {name:'', type: '', contentType: {}, status: {}, image: '', location: {latitude:'', longitude:'', address:{street:'', city:'', number:'', country:''}}, businessHours: {},  rating: ""}		,
+			facility: {name:'', type: '', contentType: {}, status: {}, image: '', location: {latitude:'', longitude:'', address:{street:'', city:'', number:'', country:''}}, businessHours: {},  rating: 0.0},
 			jwt: window.localStorage.getItem('jwt'),
 			role: window.localStorage.getItem('role'),
 			isManager: false,
 			trainings: {},
 			sortingMode: '',
+			isCustomer: false,
+			trainingId: '',
+			alreadyJoined: false,
+		  	customer: window.localStorage.getItem("customerUsername"),
 			user: null,
-			comments: null,
-			
+			comments: null
 		}
 	}, 
 	template: `
@@ -81,6 +84,8 @@ Vue.component("f-page", {
 							  <p><label>Trainer: </label>{{t.trainer}}</p>
 							  <p><label>Price: </label>{{t.price}}</p>
 							  <img v-bind:src="t.picture" class="img facility-hero-img" />
+							  <br></br>
+							  <button v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
 							  
 				            </div>
 						  </article>
@@ -108,6 +113,21 @@ Vue.component("f-page", {
 	`, methods: {
 		createTraining:function(event){
 			router.push("/newTraining")
+		},
+		joinTraining:function(training){
+		
+		console.log(this.customer)
+		    let Parameters =
+		    {
+		    	customerUsername : this.customer,
+		    	trainingName : training
+		    }
+		
+			axios
+				.post('/joinTraining', JSON.stringify(Parameters))
+					.then(response =>{
+						console.log(response.data)
+					})
 		},
 		OnlyGymTrainingType: function(event){
 		
@@ -171,7 +191,7 @@ Vue.component("f-page", {
 		},
 		checkIfManager: function(){
 		if(this.role=='MANAGER')
-		
+		{
         	axios
 				.get('/getManager',
 	                { params : {
@@ -181,13 +201,17 @@ Vue.component("f-page", {
 					var facilityName = response.data.facility;
 				
 				if(facilityName == this.facility.name)
-					this.isManager = true;
+					this.isManager = true
 					
 					console.log(this.isManager)
 				})
+		}
 		},
-		
-		getTrainings: function(){
+		getCustomer: function(){
+			if(this.role=='CUSTOMER')
+			this.isCustomer = true
+		},
+		getTrainings: function() {
 			axios
 				.get('/getFacilityTrainings',
 					{ params: {
@@ -201,6 +225,9 @@ Vue.component("f-page", {
 		
 	}, 
 	mounted () {
+		console.log(this.jwt)
+		console.log(this.role)
+		
 		axios
 			.get("oneFacility/",
             { params : {
@@ -209,9 +236,11 @@ Vue.component("f-page", {
              .then(response => {
              this.facility = response.data
              this.checkIfManager()
-             this.getTrainings();
-             })
+             this.getCustomer()
              
+             this.getTrainings()
+             
+             })
        axios
 			.get('/comments/getApprovedComments/' + window.localStorage.getItem('facilityId'))
 			.then(response => {
@@ -221,7 +250,7 @@ Vue.component("f-page", {
 				console.log(error)
 			})
              
-		
+			
         
 	}
 	

@@ -15,14 +15,7 @@ public class Training implements Serializable{
 	private int duration;
 	private String trainer;
 	private int price;
-	private String customers;
 	
-	public String getCustomers() {
-		return customers;
-	}
-	public void setCustomers(String customers) {
-		this.customers = customers;
-	}
 	public int getPrice() {
 		return price;
 	}
