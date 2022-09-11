@@ -62,7 +62,7 @@ Vue.component("newFacility-page",  {
 									
 									<div class="form-group mb-4 ">
 										<input type="checkbox" value="CLOSE" id="close" name="status" v-model="status"/>
-										<label for="close">Close</label>
+										<label for="close">Closed</label>
 									</div>									
 									<div class="form-group mb-4">
 										<label>Manager</label>
@@ -118,8 +118,8 @@ Vue.component("newFacility-page",  {
 			
 			if(this.name == ''){
 				this.errorMessage = "Please fill in facility name.";
-			}else if (this.type == ''){
-				this.errorMessage = "Please fill in facility type.";
+			}else if (!this.selectedType){
+				this.errorMessage = "Please select facility type.";
 			}else if (this.status == ''){
 				this.errorMessage = "Please fill in facility status.";
 			}else if (!this.logo){
@@ -128,6 +128,8 @@ Vue.component("newFacility-page",  {
 				this.errorMessage = "Please fill in facility address and location.";
 			}else if (this.hours == ''){
 				this.errorMessage = "Please fill in facility business hours.";
+			}else if (this.name[0] < 'A' || this.name[0] > 'Z'){
+				this.errorMessage = "Name must start with a capital letter";	
 			}else if (!this.selectedManager){
 				this.errorMessage = "Please select manager";
 			}else {

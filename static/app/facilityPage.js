@@ -82,7 +82,7 @@ Vue.component("f-page", {
 										        	<p class="card-text">{{membership.appointmentNumber}} appointments</p>
 												</li>
 											  </ul>
-										      <div v-if = "this.jwt=='-1' && this.jwt == null" class="card-footer">
+										      <div v-if="role == 'CUSTOMER' " class="card-footer">
 													
 														<button v-if="activeFacilityMembershipButton || changeButton" v-on:click="switchMembership(membership)" type="button" class="btn btn-success">Switch</button>
 														<button v-else v-on:click="buyMembership(membership)" type="button" class="btn btn-success">Buy</button>
@@ -143,7 +143,21 @@ Vue.component("f-page", {
 										<button type="submit" v-on:click="sortTrainings" class="btn btn-primary">Sort</button>
 										</div>
 							</div>
-							
+							<button v-if= "this.isManager == true" v-on:click="createTraining" class="btn btn-primary">Add new training</button>
+							<div class="single-training" v-for="t in trainings">
+				              <header>
+				                <p>{{t.name}}</p>
+				                <div>
+				                </div>
+				              </header>
+				              <p><label>Description: </label>{{t.description}}</p>
+							  <p><label>Trainer: </label>{{t.trainer}}</p>
+							  <p><label>Price: </label>{{t.price}}</p>
+							  <img v-bind:src="t.picture" class="img facility-hero-img" />
+							  <br></br>
+							  <button v-if="this.role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
+							  
+				            </div>
 						  </article>
 						  <article v-else class="article-content">
 								
@@ -180,6 +194,7 @@ Vue.component("f-page", {
 							</div>
 
 							<button v-if= "this.isManager == true" v-on:click="createTraining" class="btn btn-primary">Add new training</button>
+<<<<<<< HEAD
 							<div v-if="this.role == 'CUSTOMER'">
                                 <div class="single-training" v-for="t in trainings">
                                       <header>
@@ -209,6 +224,20 @@ Vue.component("f-page", {
                                       <img v-bind:src="t.picture" class="img facility-hero-img" />
                                   </div>
                             </div>
+=======
+							<div class="single-training" v-for="t in trainings">
+				              <header>
+				                <p>{{t.name}}</p>
+				                <div>
+				                </div>
+				              </header>
+				              <p><label>Description: </label>{{t.description}}</p>
+							  <p><label>Trainer: </label>{{t.trainer}}</p>
+							  <p><label>Price: </label>{{t.price}}</p>
+							  <img v-bind:src="t.picture" class="img facility-hero-img" />
+							  <button v-if="role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
+				            </div>
+>>>>>>> 10c28fb79b29a70fa0d3fdd390e37dbffac0c16f
 
 								
 						  </article>

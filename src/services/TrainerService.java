@@ -38,5 +38,9 @@ public class TrainerService {
 	public void updateTrainer(Trainer trainer) throws JsonSyntaxException, IOException {
 		this.trainerDAO.update(trainer);
 	}
+	
+	public void createTrainer(Trainer trainer) throws JsonSyntaxException, IOException {
+		trainerDAO.create(trainer);
+	}
 
 }
