@@ -143,22 +143,7 @@ Vue.component("f-page", {
 										<button type="submit" v-on:click="sortTrainings" class="btn btn-primary">Sort</button>
 										</div>
 							</div>
-
-							<button v-if= "this.isManager == true" v-on:click="createTraining" class="btn btn-primary">Add new training</button>
-							<div class="single-training" v-for="t in trainings">
-				              <header>
-				                <p>{{t.name}}</p>
-				                <div>
-				                </div>
-				              </header>
-				              <p><label>Description: </label>{{t.description}}</p>
-							  <p><label>Trainer: </label>{{t.trainer}}</p>
-							  <p><label>Price: </label>{{t.price}}</p>
-							  <img v-bind:src="t.picture" class="img facility-hero-img" />
-							  <br></br>
-							  <button v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
-							  
-				            </div>
+							
 						  </article>
 						  <article v-else class="article-content">
 								
@@ -195,19 +180,35 @@ Vue.component("f-page", {
 							</div>
 
 							<button v-if= "this.isManager == true" v-on:click="createTraining" class="btn btn-primary">Add new training</button>
-							<div class="single-training" v-for="t in trainings">
-				              <header>
-				                <p>{{t.name}}</p>
-				                <div>
-				                </div>
-				              </header>
-				              <p><label>Description: </label>{{t.description}}</p>
-							  <p><label>Trainer: </label>{{t.trainer}}</p>
-							  <p><label>Price: </label>{{t.price}}</p>
-							  <img v-bind:src="t.picture" class="img facility-hero-img" />
-							  <button v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
-							  
-				            </div>
+							<div v-if="this.role == 'CUSTOMER'">
+                                <div class="single-training" v-for="t in trainings">
+                                      <header>
+                                        <p>{{t.name}}</p>
+                                        <div>
+                                        </div>
+                                      </header>
+                                      <p><label>Description: </label>{{t.description}}</p>
+                                      <p><label>Trainer: </label>{{t.trainer}}</p>
+                                      <p><label>Price: </label>{{t.price}}</p>
+                                      <img v-bind:src="t.picture" class="img facility-hero-img" />
+                                      <button v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
+                                  </div>
+                          
+                            </div>
+                              
+                            <div v-else>
+                                <div class="single-training" v-for="t in trainings">
+                                      <header>
+                                        <p>{{t.name}}</p>
+                                        <div>
+                                        </div>
+                                      </header>
+                                      <p><label>Description: </label>{{t.description}}</p>
+                                      <p><label>Trainer: </label>{{t.trainer}}</p>
+                                      <p><label>Price: </label>{{t.price}}</p>
+                                      <img v-bind:src="t.picture" class="img facility-hero-img" />
+                                  </div>
+                            </div>
 
 								
 						  </article>
@@ -497,6 +498,8 @@ Vue.component("f-page", {
 				
 			}
 			});
+		if(this.role == 'CUSTOMER')
+		{
         axios
 			.get('/memberships/getFacilityMemberships/' + window.localStorage.getItem('facilityId'))
 			.then(response => {
@@ -528,6 +531,7 @@ Vue.component("f-page", {
 			.catch(error => {
 				console.log(error)
 			})
+		}
 	
 	}
 	

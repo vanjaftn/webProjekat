@@ -34,7 +34,6 @@ public class TrainingService {
 	private CustomerDAO customerDAO = new CustomerDAO("./data/customer.json");
 	private CustomerService customerService = new CustomerService(customerDAO);
 	private TrainingHistoryDAO trainingHistoryDAO = new TrainingHistoryDAO("./data/trainingHistory.json");
-	private TrainingHistoryService trainingHistoryService = new TrainingHistoryService(trainingHistoryDAO);
 	public TrainingService(TrainingDAO trainingDAO) {
 		super();
 		this.trainingDAO = trainingDAO;
