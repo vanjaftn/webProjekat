@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 
 import beans.Facility;
 import beans.FacilityStatus;
+import beans.FacilityType;
 import dao.FacilityDAO;
 import dto.FacilitySearchDTO;
 import dto.FacilitySortDTO;
@@ -53,8 +54,8 @@ public class FacilityService {
 		return facilityDAO.getByID(id);
 	}
 	
-	public ArrayList<String> getAllFacilityTypes() throws JsonSyntaxException, IOException{
-		ArrayList<String> allFacilityTypes = new ArrayList<String>();
+	public ArrayList<FacilityType> getAllFacilityTypes() throws JsonSyntaxException, IOException{
+		ArrayList<FacilityType> allFacilityTypes = new ArrayList<FacilityType>();
 		
 		for (Facility facility : getAll())
 			if(!allFacilityTypes.contains(facility.getType()))

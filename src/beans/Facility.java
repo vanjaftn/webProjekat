@@ -7,7 +7,7 @@ public class Facility implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private String type;
+	private FacilityType type;
 	private ContentType contentType;
 	private FacilityStatus status;
 	private String image;
@@ -17,7 +17,7 @@ public class Facility implements Serializable{
 	
 	private Boolean isDeleted;
 	
-	public Facility(String name, String type, ContentType contentType, FacilityStatus status,
+	public Facility(String name, FacilityType type, ContentType contentType, FacilityStatus status,
 			String image, Location location, String businessHours, double rating) {
 		super();
 		this.name = name;
@@ -37,10 +37,10 @@ public class Facility implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getType() {
+	public FacilityType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(FacilityType type) {
 		this.type = type;
 	}
 	public ContentType getContentType() {

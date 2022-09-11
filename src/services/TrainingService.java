@@ -273,7 +273,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Gym"))
+			if(facility.getType().equals(FacilityType.GYM))
 				{
 					gymTrainings.add(t);
 				}
@@ -287,7 +287,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Pool"))
+			if(facility.getType().equals(FacilityType.POOL))
 				{
 					poolTrainings.add(t);
 				}
@@ -301,7 +301,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Dance Studio"))
+			if(facility.getType().equals(FacilityType.DANCE_STUDIO))
 				{
 					danceTrainings.add(t);
 				}
@@ -315,7 +315,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Sports Facility"))
+			if(facility.getType().equals(FacilityType.SPORTS_FACILITY))
 				{
 					sportsTrainings.add(t);
 				}
@@ -329,7 +329,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Gym"))
+			if(facility.getType().equals(FacilityType.GYM))
 				{
 					gymTrainings.add(t);
 				}
@@ -343,7 +343,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Pool"))
+			if(facility.getType().equals(FacilityType.POOL))
 				{
 					poolTrainings.add(t);
 				}
@@ -351,13 +351,13 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		return poolTrainings;
 	}
-	public ArrayList<Training> getDanceFacilityTrainingsCustomer(String name) throws JsonSyntaxException, IOException{
-		ArrayList<Training> trainings = getCustomerTrainings(name);
+	public ArrayList<Training> getDanceFacilityTrainingsCustomer(String customerName) throws JsonSyntaxException, IOException{
+		ArrayList<Training> trainings = getCustomerTrainings(customerName);
 		ArrayList<Training> danceTrainings = new ArrayList<Training>();
-		
+
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Dance Studio"))
+			if(facility.getType().equals(FacilityType.DANCE_STUDIO))
 				{
 					danceTrainings.add(t);
 				}
@@ -371,7 +371,7 @@ public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParame
 		
 		for(Training t : trainings) {
 			Facility facility = facilityService.getFacilityByName(t.getSportsFacility());			
-			if(facility.getType().equals("Sports Facility"))
+			if(facility.getType().equals(FacilityType.SPORTS_FACILITY))
 				{
 					sportsTrainings.add(t);
 				}
