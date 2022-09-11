@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import beans.Manager;
 import beans.Trainer;
 import dao.TrainerDAO;
 
@@ -34,5 +35,8 @@ public class TrainerService {
 		return trainerDAO.getAll();
 	}
 	
+	public void updateTrainer(Trainer trainer) throws JsonSyntaxException, IOException {
+		this.trainerDAO.update(trainer);
+	}
 
 }

@@ -2,6 +2,7 @@ package controllers;
 
 import com.google.gson.Gson;
 
+import beans.Manager;
 import beans.Trainer;
 import services.TrainerService;
 import services.TrainingService;
@@ -40,6 +41,20 @@ public class TrainerController {
 				e.printStackTrace();
 				return "";
 			}
+		});
+		
+		post("/trainer/edit", (req,res) -> {
+			res.type("application/json");
+			
+			try {
+				Trainer newTrainer = gson.fromJson(req.body(), Trainer.class);
+				trainerService.updateTrainer(newTrainer);
+				return true;
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
 		});
 	}
 		

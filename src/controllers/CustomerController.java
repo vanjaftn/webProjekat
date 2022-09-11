@@ -5,6 +5,7 @@ import static spark.Spark.post;
 import com.google.gson.Gson;
 
 import beans.Customer;
+import beans.Manager;
 import beans.Membership;
 import beans.User;
 import dto.MembershipDTO;
@@ -102,7 +103,32 @@ public class CustomerController {
 			}
 					
 		});
+		
+		get("/customer/customer/", (req, res) -> {
+			res.type("application/json");
+			try {
+				Session session = req.session(true);
+				User loggedUser = session.attribute("user");
+				return gson.toJson(customerService.getCustomerByUsername(loggedUser.getUsername()));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
 
+		post("/customer/edit", (req,res) -> {
+			res.type("application/json");
+			
+			try {
+				Customer newCustomer = gson.fromJson(req.body(), Customer.class);
+				customerService.updateCustomer(newCustomer);
+				return true;
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+		});
 	}
 
 }

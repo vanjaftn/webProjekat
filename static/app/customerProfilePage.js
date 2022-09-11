@@ -7,7 +7,10 @@ Vue.component("customer-profile-page", {
 			successMessage: '',
 			showPassword: false,
 			role : window.localStorage.getItem('role'),
-	      	jwt: window.localStorage.getItem('jwt')
+	      	jwt: window.localStorage.getItem('jwt'),
+			facility: null,
+			customerPoints: null,
+			customerMembership: null,
 		}
 	},
 	template: `
@@ -67,8 +70,11 @@ Vue.component("customer-profile-page", {
 		},
 		edit : function (event) {
 		
-			/*event.preventDefault();
-			
+		console.log(this.user.username)
+		console.log(this.user.role)
+		console.log(this.role)
+		
+					
 			var dates = document.getElementById("dateOfBirthID").value;
        		var d=new Date(dates).toISOString().substr(0, 10);
 
@@ -91,7 +97,7 @@ Vue.component("customer-profile-page", {
 					lastName : this.user.lastName,
 					gender : this.user.gender, 
 					dateOfBirth : d,
-					role: 'CUSTOMER'
+					role: this.role
 				}
 				
 				axios
@@ -111,7 +117,64 @@ Vue.component("customer-profile-page", {
 					.catch(error => {
 					 	console.log(error.response)
 				});
-			}*/
+				
+				if(this.role == "MANAGER"){
+					let editedManager = {
+						username : this.user.username,
+						password : this.user.password,
+						name : this.user.name,
+						lastName : this.user.lastName,
+						gender : this.user.gender, 
+						dateOfBirth : d,
+						role: this.role,
+						facility: this.facility
+					}
+					axios
+						.post('/manager/edit', JSON.stringify(editedManager))
+						.then(response => {
+							console.log(response)
+						})
+						.catch(error => {
+							console.log(error)
+						})
+				}
+				
+				if(this.role == "CUSTOMER"){		
+					let editedCustomer = {
+						username : this.user.username,
+						password : this.user.password,
+						name : this.user.name,
+						lastName : this.user.lastName,
+						gender : this.user.gender, 
+						dateOfBirth : d,
+						role: this.role,
+						isDeleted: this.user.isDeleted,
+						membership: this.customerMembership,
+						points: this.customerPoints,
+					}
+					console.log(editedCustomer)
+					axios
+						.post('/customer/edit', JSON.stringify(editedCustomer))
+						.then(response => {
+							console.log(response)
+						})
+						.catch(error => {
+							console.log(error)
+						})
+					
+					console.log(this.user)
+				}
+				if(this.role == "TRAINER"){
+					axios
+						.post('/trainer/edit', JSON.stringify(editedUser))
+						.then(response => {
+							console.log(response)
+						})
+						.catch(error => {
+							console.log(error)
+						})
+				}	
+			}
 		}
 	},
 	mounted(){
@@ -125,8 +188,24 @@ Vue.component("customer-profile-page", {
 	                }})
 				.then(response => {
 					this.user = response.data;
-					console.log(this.user.username);
 				})
+			
+			axios
+				.get('/manager/')
+				.then(response => {
+					this.facility = response.data.facility
+					console.log(this.facility)
+				})
+			
+			axios
+				.get('/customer/customer/')
+				.then(response => {
+					this.customerPoints = response.data.points
+					this.customerMembership = response.data.membership
+					console.log(response.data)
+				})
+				.catch(error => console.log(error))
+			
 				
 		}
 });

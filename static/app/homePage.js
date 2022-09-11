@@ -23,49 +23,7 @@ Vue.component("home-page", {
 	template:`  
 		<div id="home">
 			<navbar/>
-			<!-- .............................................SEARCH ..............................................................................-->		
-	
-	
-			<div class="container row gx-3 gy-8 align-items-center search-box flex-lg-nowrap">
-				
-			  		<div class="col-sm-3">
-			    		<input v-model="searchName" v-on:keyup="enterPressedSearch" type="text" class="form-control" id="facilitiName" placeholder="Text...">
-			  		</div>
-			  		<div class="col-sm-3">
-						<input v-model="searchLocation" v-on:keyup="enterPressedSearch" type="text" class="form-control" placeholder="Location...">
-		  			</div>
-			  		<div class="col-sm-3">
-			   			<select v-model="searchType" class="form-select" id="typeS">
-							<option value="" selected disabled>Type</option>
-							<option v-for="type in facilityType" v-bind:value="type">
-								 {{type}}
-							</option>
-			    		</select>
-			 		</div>
-				
-					<div class="col-sm-3">
-			   			<select v-model="searchRating" class="form-select" id="rating">
-							<option value="" selected disabled>Rating</option>
-							<option v-for="index in 5" :key="index" v-bind:value="index">
-								 {{index}}
-							</option>
-			    		</select>
-			 		</div>
-				  
-				    <div class="col-auto">
-					    <button type="submit" v-on:click="searchFacilities" class="btn btn-primary">Search</button>
-				    </div>
-				    
-				
-			</div>
 			
-			<div v-if="searchName || searchLocation || searchType || searchRating" class="container refreshSearch row justify-content-end">
-		 		<div class="col-sm-3">
-					<button v-on:click="resetSearch" class="btn btn-outline-primary">Reset Search</button>
-				</div>
-		
-			</div>
-
 <!-- .............................................FILTER & SORT FACILITIES ..............................................................................-->		
 	
 	<div class = "container  filter-box-admin d-none d-md-block d-lg-block d-xxl-block">
@@ -170,6 +128,51 @@ Vue.component("home-page", {
 				</div>
 			</div>
 		
+
+
+			<!-- .............................................SEARCH ..............................................................................-->		
+	
+	
+			<div class="container row gx-3 gy-8 align-items-center search-box flex-lg-nowrap">
+				
+			  		<div class="col-sm-3">
+			    		<input v-model="searchName" v-on:keyup="enterPressedSearch" type="text" class="form-control" id="facilitiName" placeholder="Name...">
+			  		</div>
+			  		<div class="col-sm-3">
+						<input v-model="searchLocation" v-on:keyup="enterPressedSearch" type="text" class="form-control" placeholder="Location...">
+		  			</div>
+			  		<div class="col-sm-3">
+			   			<select v-model="searchType" class="form-select" id="typeS">
+							<option value="" selected disabled>Type</option>
+							<option v-for="type in facilityType" v-bind:value="type">
+								 {{type}}
+							</option>
+			    		</select>
+			 		</div>
+				
+					<div class="col-sm-3">
+			   			<select v-model="searchRating" class="form-select" id="rating">
+							<option value="" selected disabled>Rating</option>
+							<option v-for="index in 5" :key="index" v-bind:value="index">
+								 {{index}}
+							</option>
+			    		</select>
+			 		</div>
+				  
+				    <div class="col-auto">
+					    <button type="submit" v-on:click="searchFacilities" class="btn btn-primary">Search</button>
+				    </div>
+				    
+				
+			</div>
+			
+			<div v-if="searchName || searchLocation || searchType || searchRating" class="container refreshSearch row justify-content-end">
+		 		<div class="col-sm-3">
+					<button v-on:click="resetSearch" class="btn btn-outline-primary">Reset Search</button>
+				</div>
+		
+			</div>
+
 			
 		<!-- .............................................FACILITIES VIEW ..............................................................................-->		
 		
@@ -244,7 +247,6 @@ Vue.component("home-page", {
 				})
 		},
 		showFacility : function (facility) {
-			window.location.href = "/#/facility?id=" + facility.name;
 			localStorage.setItem("facilityId", facility.name)
 			router.push('/singleFacility')
 		},
@@ -274,7 +276,7 @@ Vue.component("home-page", {
 		},
 		enterPressedSearch: function (event) {
 			if (event.keyCode === 13) {
-				this.searchRestaurants();
+				this.searchFacilities();
 			}
 		},
 		setAscendingSortMode : function (event) {

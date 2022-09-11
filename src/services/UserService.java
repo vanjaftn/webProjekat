@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Role;
+import beans.Trainer;
 import beans.User;
 import dao.UserDAO;
 import dto.LoginDTO;
@@ -61,7 +62,8 @@ public class UserService {
                 .setExpiration(new Date(new Date().getTime() + 600000 * 10L)).setIssuedAt(new Date()).signWith(key).compact();
         response.add(jws);
         response.add(user.getRole().toString());
-        
+       
+      
         return gson.toJson(response);
 	}
 	
@@ -208,5 +210,5 @@ public class UserService {
 		
 		return allCustomers;
 	}
-
+	
 }
