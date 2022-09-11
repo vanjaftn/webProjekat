@@ -143,8 +143,7 @@ Vue.component("register-page", {
 	    					this.errorMessage = "Username already exists"
 						
 	    				} else {
-							localStorage.setItem("user-info", document.getElementById("usernameReg").value)
-							window.location.href = "#/customer?id=" + response.data.role;
+							window.location.href = "#/";
 							
 	    				}
 	    			})

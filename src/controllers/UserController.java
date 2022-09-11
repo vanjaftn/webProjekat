@@ -75,9 +75,29 @@ public class UserController {
 			
 			try {
 				User loggedUser = userService.login(gson.fromJson(req.body(), LoginDTO.class));
+				System.out.println(loggedUser.getName());
 				if (loggedUser != null) {
 					
 					return userService.loginUser(loggedUser);
+				} else {
+					return "";
+				}
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				return e;
+			}
+		});
+		post("/user/chechUsernamePassword", (req,res) -> {
+			res.type("application/json");
+			
+			try {
+				User loggedUser = userService.login(gson.fromJson(req.body(), LoginDTO.class));
+				if (loggedUser != null) {
+					Session session = req.session(true);
+					session.attribute("user", loggedUser);
+					
+					return gson.toJson(loggedUser);
 				} else {
 					return "";
 				}
@@ -102,10 +122,12 @@ public class UserController {
 		
 		get("/user/", (req, res) -> {
 			res.type("application/json");
+			
 			try {
+				System.out.println("eee");
 				Session s = req.session(true);
 				User loggedUser = s.attribute("user");
-				
+				System.out.println(loggedUser);
 				return gson.toJson(loggedUser);
 			} catch (Exception e) {
 				return "";

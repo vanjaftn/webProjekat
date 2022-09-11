@@ -86,29 +86,39 @@ Vue.component("login-page", {
 					username: this.usernameLogin, 
 					password: this.passwordLogin
 				}
-				axios 
-    			.post('/user/login', JSON.stringify(user))
-    			.then(response => {
-					console.log(response.status)
-    				if(response.status == "200") {
-		 				if (response.data == "") {
-	    					this.errorMessage = "invalid username or password"
-	    				} else if(response.data.isDeleted){
-		    				this.errorMessage = "Your account has been deleted."
-						} else {
-	    					localStorage.setItem('jwt', JSON.parse(JSON.stringify(response.data))[0]);
-			            	localStorage.setItem("role", JSON.parse(JSON.stringify(response.data))[1]);
-			            	alert("Success!")
-								console.log(localStorage.getItem("role"))
-								console.log(localStorage.getItem("jwt"))
-								
-           					router.push("/");		            	
-	    				}
-					}
-    			})
-    			.catch(error => {
-				    console.log(error.response)
-				});
+				
+		axios 
+			.post('/user/chechUsernamePassword', JSON.stringify(user))
+			.then(response => {
+				
+				if(response.status == "200") {
+	 				if (response.data == "") {
+    					this.errorMessage = "invalid username or password"
+    				} else if(response.data.isDeleted){
+	    				this.errorMessage = "Your account has been deleted."
+					} else {
+    					   axios 
+				    			.post('/user/login', JSON.stringify(user))
+				    			.then(response => {
+									
+					    					localStorage.setItem('jwt', JSON.parse(JSON.stringify(response.data))[0]);
+							            	localStorage.setItem("role", JSON.parse(JSON.stringify(response.data))[1]);
+							            	localStorage.setItem("user-info", document.getElementById("username").value)							
+	//										alert("Success!")
+												console.log(localStorage.getItem("role"))
+												console.log(localStorage.getItem("jwt"))
+												console.log(response.data)
+				           					router.push("/");		       
+				    			})
+				    			.catch(error => {
+								    console.log(error.response)
+								});         	
+    				}
+				}
+				console.log(response.data)
+			})
+				
+				
 			}
 		}
 	},

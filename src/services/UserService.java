@@ -61,7 +61,8 @@ public class UserService {
                 .setExpiration(new Date(new Date().getTime() + 600000 * 10L)).setIssuedAt(new Date()).signWith(key).compact();
         response.add(jws);
         response.add(user.getRole().toString());
-        
+       
+      
         return gson.toJson(response);
 	}
 	
