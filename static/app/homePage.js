@@ -7,14 +7,16 @@ Vue.component("home-page", {
 			searchLocation: '',
 		    searchType: '',
 		    searchRating: '',
-			refreshSearchHidden: true,
 			isLoginDisabled: false,
 			passwordShow: false,
 			sortParameter: '',
 			sortMode: '',
 			role : window.localStorage.getItem('role'),
 	      	jwt: window.localStorage.getItem('jwt'),
-	      	isTrainer: false
+	      	isTrainer: false,
+			facilityList: null,
+			filterOpen: '',
+			filterOpen2: '',
 	      	
 		}
 	}, 	
@@ -33,13 +35,12 @@ Vue.component("home-page", {
 						<input v-model="searchLocation" v-on:keyup="enterPressedSearch" type="text" class="form-control" placeholder="Location...">
 		  			</div>
 			  		<div class="col-sm-3">
-			   			<input v-model="searchType" v-on:keyup = "enterPressedSearch" type = "text" class = "form-control" placeholder = "Type..."> 
-			   			 <!-- class="form-select" id="type">
-							 <option value="" selected disabled>Type</option>
-							<option v-for="type in facilityType">
+			   			<select v-model="searchType" class="form-select" id="typeS">
+							<option value="" selected disabled>Type</option>
+							<option v-for="type in facilityType" v-bind:value="type">
 								 {{type}}
 							</option>
-			    		</select> -->
+			    		</select>
 			 		</div>
 				
 					<div class="col-sm-3">
@@ -52,67 +53,130 @@ Vue.component("home-page", {
 			 		</div>
 				  
 				    <div class="col-auto">
-					    <button type="submit" v-on:click="searchRestaurants" class="btn btn-primary">Search</button>
+					    <button type="submit" v-on:click="searchFacilities" class="btn btn-primary">Search</button>
 				    </div>
 				    
 				
 			</div>
 			
-			<div v-if="!refreshSearchHidden" class="container refreshSearch row justify-content-end">
+			<div v-if="searchName || searchLocation || searchType || searchRating" class="container refreshSearch row justify-content-end">
 		 		<div class="col-sm-3">
 					<button v-on:click="resetSearch" class="btn btn-outline-primary">Reset Search</button>
 				</div>
 		
 			</div>
-<!-- .............................................FILTER FACILITIES ..............................................................................-->		
-			<div class = "container align-items-left search-box flex-lg-nowrap">
-				<div class = "row" style="max-width: 375px;background-color: #a1d2e3; border-radius: 20px">
-					<div class = "col-auto">
-						<input type="checkbox" @change="showOnlyOpenedFacilities($event)">
-						<label style="color: black;">Opened facilities</label></br>					
-					</div>
-				</div>
-			</div>
-<!-- .............................................SORT FACILITIES ..............................................................................-->		
+
+<!-- .............................................FILTER & SORT FACILITIES ..............................................................................-->		
+	
+	<div class = "container  filter-box-admin d-none d-md-block d-lg-block d-xxl-block">
+		<div class="row align-items-start">
 			
-			<div class = "container row gx-2 gy-5 align-items-center search-box flex-lg-nowrap">
-				<div class = "row" style="max-width: 375px; background-color: #a1d2e3; border-radius: 20px">
-					
-					<div class = "col-auto">
-						<input type="radio" name = "sortBy" @change="setNameAsSortParameter($event)">
-						<label style="color: black;"> Name</label><br/>
-					</div>
-					<div class = "col-auto">
-						<input type="radio" name = "sortBy" @change="setLocationAsSortParameter($event)">
-						<label style="color: black;"> Location</label><br/>
-					</div>
-					<div class = "col-auto">
-						<input type="radio" name = "sortBy" @change="setGradeAsSortParameter($event)">
-						<label style="color: black;"> Grade</label><br/>
-					</div>
-					<div class = "col-auto">
-						<button type="submit" v-on:click="sortFacilities" class="btn btn-primary">Sort</button>
-					</div>
-					<div class = "col-auto">
-						<input type="radio" name = "sortAs" @change="setAscSortMode($event)">
-						<label style="color: black;">Ascending</label></br>
-					</div>
-					<div class = "col-auto">
-						<input type="radio" name = "sortAs" @change="setDescSortMode($event)">
-						<label style="color: black;">Descending</label></br>
-					</div>
-					<div class = "col-auto">
-						<button type="submit" v-on:click="sortFacilities" class="btn btn-primary">Sort</button>
-					</div>
+			<div class = "col row-cols-1 row-cols-md-2 g-4 m-3" style="max-width: 270px; background-color: #a1d2e3; border-radius: 20px">
+				<div class="ms-2 mt-1">
+					<p> Filter </p>		
+				</div>
+				<div>
+				    <input type="radio"  @change="showOnlyOpend($event)"  id="open" name="filterOpen" value="open" v-model="filterOpen">
+			        <label style="color: darkgrey;" > Open</label><br/>
+			    </div>
+				<div class="float-end text-end me-2 mb-1">
+					<button v-if="filterOpen" v-on:click="filterReset" class="btn btn-outline-primary"> Reset </button>
+				</div>  	
+			</div>
+		
+		 
+			<div class = "col row-cols-1 row-cols-md-2 g-4 m-3" style="max-width: 22rem; background-color: #a1d2e3; border-radius: 20px">
+				<div class="ms-2 mt-1">
+					 Sort 	
+				</div>			 
+				<div class=" row ms-4">
+					<div class=" col-auto ">		
+						<input type="radio" @change="setNameAsSortParameter($event)" name="sort">
+		        		<label style="color: darkgrey;"> Name</label>
+		        	</div>
+					<div class=" col-auto ">
+					    <input type="radio" @change="setLocationAsSortParameter($event)" name="sort">
+		       		 	<label style="color: darkgrey;"> Location </label>
+		       	 	</div>
+					<div class=" col-auto">
+					    <input type="radio" @change="setRatingAsSortParameter($event)" name="sort">
+		        		<label style="color: darkgrey;"> Rating</label>
+		        	</div>
+					<hr class="bg-danger border-2 border-top border-danger ms-2">
+					<div class=" col-auto ">		
+							<input type="radio" @change="setDescendingSortMode($event)" name="sortD">
+		        			<label style="color: darkgrey;"> Descending</label>
+			        </div>
+					<div class=" col-auto">
+					  	<input type="radio" @change="setAscendingSortMode($event)" name="sortD">
+			        	<label style="color: darkgrey;" > Ascending</label>
+			        </div>   
+				</div>
+				<div class="float-end text-end me-2 mb-1">
+					<button type="submit" class="btn btn-primary " v-on:click="sortFacilities">Sort</button>
+				</div> 
+				   
+			</div>
+				
+		</div>
+	</div>	
+	
+		
+		<div class="dropbox-menu d-block d-lg-none">
+				<div class="dropdown">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuClickable" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+				  	Filter and Sort
+				  </button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				    <li><div class="dropdown-item">
+						Fiter
+						<div>
+						    <input type="radio"  @change="showOnlyOpend($event)"  id="open2" name="filterOpen2" value="open2" v-model="filterOpen2">
+					        <label style="color: darkgrey;" > Open</label><br/>
+					    </div>
+						<div class="float-end text-end me-2 mb-1">
+							<button v-if="filterOpen2" v-on:click="filterReset" class="btn btn-outline-primary"> Reset </button>
+						</div>  
+					</div></li>
+					<li><hr class="dropdown-divider"></li>
+				    <li><div class="dropdown-item">
+						Sort
+						<div class=" col-auto ">		
+							<input type="radio" @change="setNameAsSortParameter($event)" name="sort">
+			        		<label style="color: darkgrey;"> Name</label>
+			        	</div>
+						<div class=" col-auto ">
+						    <input type="radio" @change="setLocationAsSortParameter($event)" name="sort">
+			       		 	<label style="color: darkgrey;"> Location </label>
+			       	 	</div>
+						<div class=" col-auto">
+						    <input type="radio" @change="setRatingAsSortParameter($event)" name="sort">
+			        		<label style="color: darkgrey;"> Rating</label>
+			        	</div>
+						<hr class="bg-danger border-2 border-top border-danger ms-2">
+						<div class=" col-auto ">		
+								<input type="radio" @change="setDescendingSortMode($event)" name="sortD">
+			        			<label style="color: darkgrey;"> Descending</label>
+				        </div>
+						<div class=" col-auto">
+						  	<input type="radio" @change="setAscendingSortMode($event)" name="sortD">
+				        	<label style="color: darkgrey;" > Ascending</label>
+				        </div>   
+					</div></li>
+				    <li><div class="dropdown-item" >
+						<button type="submit" class="btn btn-primary " v-on:click="sortFacilities">Sort</button>
+					</div></li>
+				  </ul>
 				</div>
 			</div>
 		
+			
 		<!-- .............................................FACILITIES VIEW ..............................................................................-->		
 		
 			
 		<div class="container result-box d-flex justify-content-center pt-2 pb-2">
 		
-			<div class="row row-cols-1 row-cols-md-2 g-4" style = "background-color: #dcdff5">
+			<div class="row row-cols-1 row-cols-md-2 g-4 fit-one" style = "background-color: #dcdff5">
   				
 				
 				<div v-for="facility in facilities" v-on:click="showFacility(facility)" style = "background-color: #dcdff5">
@@ -141,7 +205,29 @@ Vue.component("home-page", {
 		</div>	
     	</div>
 
-	`, methods: {	
+	`, methods: {
+		filterReset: function(event) {
+			this.filterOpen = "";
+			this.filterOpen2 = "";
+			this.facilities = this.facilityList;
+		},	
+		showOnlyOpend : function (event) {
+			let sortParameters = {
+				facilities: this.facilities
+			}
+			
+			axios
+				.post('/facilities/getOpenedFacilities', JSON.stringify(sortParameters))
+				.then(response => {
+					if(response.data != null) {
+						this.facilities= response.data;
+						console.log(this.users)
+					}
+				})
+				.catch(error => {
+					console.log(error)
+				});	
+		},
 		checkIfTrainer: function(){
 			if(this.role == 'TRAINER')
 			this.isTrainer = true
@@ -167,16 +253,16 @@ Vue.component("home-page", {
 			this.searchLocation = '',
 		    this.searchType = '',
 		    this.searchRating = '',
-			this.searchRestaurants();
+			this.filterReset();
 		},
-		searchRestaurants : function (event) {
-			this.refreshSearchHidden = !this.refreshSearchHidden;
+		searchFacilities : function (event) {
 			
 				let searchParameters = {
 						name : this.searchName,
 						location : this.searchLocation,
 	    				type : this.searchType,
-	    				grade: this.searchRating			
+	    				grade: this.searchRating,
+						facilities: this.facilities			
     			}
 
     			axios 
@@ -191,47 +277,45 @@ Vue.component("home-page", {
 				this.searchRestaurants();
 			}
 		},
-		setAscSortMode: function(event){
+		setAscendingSortMode : function (event) {
 			this.sortMode = 'asc';
 		},
-		setDescSortMode: function(event){
-			this.sortMode = 'desc';
-		},		
-		setNameAsSortParameter: function(event){
+		
+		setDescendingSortMode : function (event) {
+			this.sortMode = 'desc'
+		},
+		
+		setNameAsSortParameter : function (event) {
 			this.sortParameter = 'name';
 		},
-		setLocationAsSortParameter: function(event){
+		
+		setLocationAsSortParameter : function (event) {
 			this.sortParameter = 'location';
 		},
-		setGradeAsSortParameter: function(event){
+		
+		setRatingAsSortParameter : function (event) {
 			this.sortParameter = 'rating';
 		},
+		
 		sortFacilities: function(event){
 		
 			let sortParameters =
 			{
 				parameter : this.sortParameter,
-				mode : this.sortMode
+				mode : this.sortMode,
+				facilities: this.facilities
 			}
 			
 			axios
 				.post('/facilities/sortFacilities', JSON.stringify(sortParameters))
-		    		.then(response => {
+		    	.then(response => {
 		    		   this.facilities = response.data;
-		    		   console.log(this.facilities);
+		    		   console.log(this.facilities)
 		    	})
-		},
-		showOnlyOpenedFacilities: function(event){
-			
-			axios
-				.get('/facilities/openedFacilities')
-					.then(response => {
-						if(response.data != null){
-							this.facilities = response.data;
-						}
-					})
-		}
-		
+				.catch(error => {
+						console.log(error)
+				})
+		},		
 	}, 
 	mounted () {
 		console.log(this.jwt)
@@ -241,6 +325,7 @@ Vue.component("home-page", {
           		.then(response => {
 					if (response.data != null) {
 						this.facilities = response.data;
+						this.facilityList=response.data;
 					}
 				})
 				.catch(error => {

@@ -1,9 +1,9 @@
-root { -
-	-max-width: 1120px; -
-	-borderRadius: 0.25rem; -
-	-primary-500: #645cff; -
-	-grey-600: #475569; -
-	-white: #fff;
+root { 
+	--max-width: 1120px; 
+	--borderRadius: 0.25rem; 
+	--primary-500: #645cff; 
+	--grey-600: #475569; 
+	--white: #fff;
 }
 
 .page {
@@ -142,4 +142,14 @@ root { -
 	padding-bottom: 0.75rem;
 	color: #645cff;
 	text-transform: capitalize;
+}
+.bgcolor {
+  background-color: bisque;
+}
+.bgcolorheader {
+  background-color: #bbbbcc47;
+}
+
+.article-button {
+	text-align: center;
 }

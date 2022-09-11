@@ -1,18 +1,24 @@
 package dto;
 
+import java.util.ArrayList;
+
+import beans.Facility;
+
 public class FacilitySearchDTO {
 
 	private String name;
 	private String location;
 	private String type;
 	private String grade;
+	private ArrayList<Facility> facilities;
 	
-	public FacilitySearchDTO(String name, String location, String type, String grade) {
+	public FacilitySearchDTO(String name, String location, String type, String grade, ArrayList<Facility> facilities) {
 		super();
 		this.name = name;
 		this.location = location;
 		this.type = type;
 		this.grade = grade;
+		this.facilities = facilities;
 	}
 
 	public String getName() {
@@ -45,6 +51,14 @@ public class FacilitySearchDTO {
 
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+
+	public ArrayList<Facility> getFacilities() {
+		return facilities;
+	}
+
+	public void setFacilities(ArrayList<Facility> facilities) {
+		this.facilities = facilities;
 	}
 	
 	

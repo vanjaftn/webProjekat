@@ -8,7 +8,7 @@ Vue.component("register-page", {
 			genderRegistration: '',
 			dateRegistration: '',
 			roleRegistration: '',
-			errorMessageRegistration: '', 
+			errorMessage: '', 
 			showPasswordReg: false
 		}
 	},
@@ -23,7 +23,7 @@ Vue.component("register-page", {
 			    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			        <li class="nav-item">
-			          <a class="nav-link active">Home</a>
+					  <a class="nav-link active pointer" v-on:click="homePage">Home</a>
 			        </li>
 			      </ul>
 			    </div>
@@ -66,7 +66,7 @@ Vue.component("register-page", {
 										<label>Date of birth:</label>
 										<input v-model="dateRegistration" type="date" id="dateOfBirthID" class="form-control" style="margin-top: 9px;">
 									</div>
-									<p class="errorMessage mt-2">{{errorMessageRegistration}}</p>
+									<p class="errorMessage mt-2">{{errorMessage}}</p>
 									<div class="d-grid">
 										<button class="btn btn-primary" v-on:click="userRegistration" type="button">Sing up</button>
 									</div>
@@ -81,6 +81,9 @@ Vue.component("register-page", {
 		</div>
 	`,
 	methods: {
+		homePage : function (event) {
+			window.location.href = "#/";
+		},
 		passwordShowToggleReg : function (event) {
 			this.showPasswordReg = !this.showPasswordReg;	
 		},	
@@ -88,34 +91,41 @@ Vue.component("register-page", {
 			
 			event.preventDefault();
 			
-			if (this.usernameRegistration == '') {
-				this.errorMessageRegistration = "Please fill in all fields.";
-			} else if (this.passwordRegistration == '') {
-				this.errorMessageRegistration = "Please fill in all fields.";
-			} else if (this.lastNameRegistration == '') {
-				this.errorMessageRegistration = "Please fill in all fields.";
-			} else if (this.firstNameRegistration == '') {
-				this.errorMessageRegistration = "Please fill in all fields.";
-			} else if (this.genderRegistration == '') {
-				this.errorMessageRegistration = "Please fill in all fields.";
-			} else if (this.date == '') {
-				this.errorMessageRegistration = "Please fill in all fields.";
-			} else {
-				
-				
-				
-				let gender;
-				if (this.genderRegistration == 'MALE') {
-					gender = 'MALE';
-				} else if (this.genderRegistration == 'FEMALE') {
-					gender = 'FEMALE';
-				}
-				
-				let getDateById = document.getElementById("dateOfBirthID").value;
-				if(getDateById) {
-					var date = new Date(getDateById).toISOString().substr(0,10);
-				}
-				
+			let gender;
+			if (this.genderRegistration == 'MALE') {
+				gender = 'MALE';
+			} else if (this.genderRegistration == 'FEMALE') {
+				gender = 'FEMALE';
+			}
+			
+			let getDateById = document.getElementById("dateOfBirthID").value;
+			if(getDateById) {
+				var date = new Date(getDateById).toISOString().substr(0,10);
+			}
+			
+			var valid = true;
+			
+			if(!this.usernameRegistration){
+				valid=false;
+				this.errorMessage="Please enter username"
+			} else 	if(!this.passwordRegistration){
+				valid=false;
+				this.errorMessage="Please enter password"
+			} else 	if(!this.firstNameRegistration){
+				valid=false;
+				this.errorMessage="Please enter your name"
+			} else 	if(!this.lastNameRegistration){
+				valid=false;
+				this.errorMessage="Please enter last name"
+			} else 	if(!gender){
+				valid=false;
+				this.errorMessage="Please choose gender"
+			} else 	if(!date){
+				valid=false;
+				this.errorMessage="Please choose date of birth"
+			}	
+			
+			if(valid){
 				
 				let registratedUser = {
 					username: this.usernameRegistration,
@@ -130,7 +140,7 @@ Vue.component("register-page", {
 	    			.post('/user/register', JSON.stringify(registratedUser))
 	    			.then(response => {
 	    				if (response.data == "") {
-	    					this.errorMessage = "invalid sing in"
+	    					this.errorMessage = "Username already exists"
 						
 	    				} else {
 							localStorage.setItem("user-info", document.getElementById("usernameReg").value)
@@ -143,8 +153,8 @@ Vue.component("register-page", {
 						console.log(error)
 					});
 					
-				
 				}
+				
 		},
 		
 	},

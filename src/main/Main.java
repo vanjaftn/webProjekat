@@ -6,21 +6,27 @@ import static spark.Spark.staticFiles;
 
 import java.io.File;
 
+import controllers.CommentController;
 import controllers.CustomerController;
 import controllers.FacilityController;
 import controllers.ManagerController;
+import controllers.MembershipController;
 import controllers.TrainerController;
 import controllers.TrainingController;
 import controllers.UserController;
+import dao.CommentDAO;
 import dao.CustomerDAO;
 import dao.FacilityDAO;
 import dao.ManagerDAO;
+import dao.MembershipDAO;
 import dao.TrainerDAO;
 import dao.TrainingDAO;
 import dao.UserDAO;
+import services.CommentService;
 import services.CustomerService;
 import services.FacilityService;
 import services.ManagerService;
+import services.MembershipService;
 import services.TrainerService;
 import services.TrainingService;
 import services.UserService;
@@ -59,6 +65,14 @@ public class Main {
 		CustomerDAO customerDAO = new CustomerDAO("./data/customers.json");
 		CustomerService customerService = new CustomerService(customerDAO);
 		CustomerController customerController = new CustomerController(customerService);
+	
+		CommentDAO commentDAO = new CommentDAO("./data/comments.json");
+		CommentService commentService = new CommentService(commentDAO);
+		CommentController commentController = new CommentController(commentService);
+	
+		MembershipDAO membershipDAO = new MembershipDAO("./data/memberships.json");
+		MembershipService membershipService = new MembershipService(membershipDAO);
+		MembershipController membershipController = new MembershipController(membershipService);
 	
 	}
 }

@@ -1,75 +1,134 @@
 .bg-light {
-	background-color: #539ace !important;
+    background-color: #539ace!important;
 }
 
-.pointer {
+.pointer  {
 	cursor: pointer;
 }
 
 .errorMessage {
-	color: red !important;
+    color: red!important;
 }
 
 .successMessage {
-	color: green !important;
+    color: green!important;
 }
 
 .search-box {
-	top: 40%;
-	left: 47%;
-	position: absolute;
-	transform: translate(-50%, -50%);
+    top: 44%;
+    left: 47%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.sort-box {
+    top: 17%;
+    left: 48%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.sort-box2 {
+    top: 25%;
+    left: 48%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.filter-box {
+    top: 32%;
+    left: 48%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.filter-box-admin {
+    top: 24%;
+    left: 48%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.dropbox-menu {
+    top: 17%;
+    left: 48%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
 }
 
 .refreshSearch {
-	top: 50%;
-	left: 20%;
-	position: absolute;
-	transform: translate(0%, 15%);
+	top: 54%;
+    left: 20%;
+    position: absolute;
+    transform: translate(0%, 15%);
 }
 
 .result-box {
-	max-width: 80%;
-	position: absolute;
-	top: 60%;
-	left: 10%;
-	/*   background-color: white;		*/
+   	max-width: 80%;
+    position: absolute;
+    top: 64%;
+    left: 10%;
+/*   background-color: white;		*/
+}
+
+.result-box-comments-heading {
+   	max-width: 80%;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+/*   background-color: white;		*/
+}
+
+.result-box-comments {
+   	max-width: 80%;
+    position: absolute;
+    top: 40%;
+    left: 10%;
+/*   background-color: white;		*/
 }
 
 .cardRow {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-	grid-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-gap: 16px;
 }
 
-.fa-angle-right {
-	color: #fb8500;
-	font-size: 60px;
-	transition: 0.5s;
-}
-
-.cardHover:hover {
-	background-color: #f5dcec;
-	transition: 0.8s;
-}
-
-.cardHover:hover .card-title {
-	font-size: x-large;
-}
-
-.cardHover:hover .fa-angle-right {
-	font-size: 70px;
-	color: #ad2400;
+.fa-trash {
+  color: rgb(0, 0, 0);
+  font-size: 30px;
+  transition: 0.5s;
 }
 
 .cardHover:hover {
-	cursor: pointer;
+  background-color: #f5dcec;
+  transition: 0.8s;
+}
+
+.cardHover:hover .card-title{
+  font-size: x-large;
+}
+
+.cardHover:hover .fa-trash{
+  font-size: 50px;
+  color: #ad2400;
+}
+
+.cardHover:hover {
+  cursor: pointer;
 }
 
 .passwordIcon {
-	float: right;
-	margin-right: 6px;
-	margin-top: -26px;
-	position: relative;
-	z-index: 2;
+        float: right;
+        margin-right: 6px;
+        margin-top: -26px;
+        position: relative;
+        z-index: 2;
+}
+
+.m-a {
+	margin:auto;
+}
+.fit-one{
+	min-width: -webkit-fill-available;
 }

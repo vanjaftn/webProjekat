@@ -8,10 +8,12 @@ import java.util.Date;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import beans.Role;
 import beans.User;
 import dao.UserDAO;
 import dto.LoginDTO;
 import dto.UserSearchDTO;
+import dto.UserSortDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -85,8 +87,8 @@ public class UserService {
     }
 	
 	public ArrayList<User> getSearchedUsers(UserSearchDTO searchParams) throws JsonSyntaxException, IOException{
-		ArrayList<User> allUsers = getAll();
-		ArrayList<User> searchedUser = getAll();
+		ArrayList<User> allUsers = searchParams.getUsers();
+		ArrayList<User> searchedUser = new ArrayList<User>();
 		
 		if(!searchParams.getName().trim().isEmpty()){
 			searchedUser.clear();
@@ -128,6 +130,83 @@ public class UserService {
 
 	public void editUser(User user) throws JsonSyntaxException, IOException {
 		usersDAO.update(user);
+	}
+
+	public ArrayList<User> getAllNonDeleted() throws JsonSyntaxException, IOException{
+		return usersDAO.getAllNonDeleted();
+	}
+	
+	public ArrayList<User> getSortedUsers(UserSortDTO sortParameters) throws JsonSyntaxException, IOException {
+		ArrayList<User> sortedUsers = sortParameters.getUsers();
+		
+		if(sortParameters.getParameter().equals("name")) {
+			if(sortParameters.getMode().equals("asc")) {
+				sortedUsers.sort((o1, o2)-> o1.getName().compareTo( o2.getName()));
+			}else {
+				sortedUsers.sort((o1, o2)-> o2.getName().compareTo( o1.getName()));
+			}
+		}else if(sortParameters.getParameter().equals("surname")) {
+			if(sortParameters.getMode().equals("asc")) {
+				sortedUsers.sort((o1, o2)-> o1.getLastName().compareTo( o2.getLastName()));
+			}else {
+				sortedUsers.sort((o1, o2)-> o2.getLastName().compareTo( o1.getLastName()));
+			}
+		}
+		else if(sortParameters.getParameter().equals("username")) {
+			if(sortParameters.getMode().equals("asc")) {
+				sortedUsers.sort((o1, o2)-> o1.getUsername().compareTo( o2.getUsername()));
+			}else {
+				sortedUsers.sort((o1, o2)-> o2.getUsername().compareTo( o1.getUsername()));
+			}
+		}
+		
+		return sortedUsers;
+	}
+		
+	public ArrayList<User> getAllAdmins(UserSortDTO sortParameters) throws JsonSyntaxException, IOException {
+		
+		ArrayList<User> allAdmins = new ArrayList<User>();
+				
+		for (User user : sortParameters.getUsers()) {
+			if(user.getRole().equals(Role.ADMIN)) {
+				allAdmins.add(user);
+			}
+		}
+		
+		return allAdmins;
+	}
+
+	public ArrayList<User> getAllManagers(UserSortDTO sortParameters) throws JsonSyntaxException, IOException {
+		
+		ArrayList<User> allManagers = new ArrayList<User>();
+		
+		for (User user : sortParameters.getUsers()) 
+			if(user.getRole().equals(Role.MANAGER))
+				allManagers.add(user);		
+		
+		return allManagers;
+	}
+	
+	public ArrayList<User> getAllTrainers(UserSortDTO sortParameters) throws JsonSyntaxException, IOException {
+		
+		ArrayList<User> allTrainers = new ArrayList<User>();
+		
+		for (User user : sortParameters.getUsers()) 
+			if(user.getRole().equals(Role.TRAINER))
+				allTrainers.add(user);		
+		
+		return allTrainers;
+	}
+	
+	public ArrayList<User> getAllCustomers(UserSortDTO sortParameters) throws JsonSyntaxException, IOException {
+		
+		ArrayList<User> allCustomers = new ArrayList<User>();
+		
+		for (User user : sortParameters.getUsers()) 
+			if(user.getRole().equals(Role.CUSTOMER))
+				allCustomers.add(user);		
+		
+		return allCustomers;
 	}
 
 }

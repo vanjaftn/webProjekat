@@ -77,7 +77,14 @@ public class FacilityDAO implements IDao<Facility, String>{
 	@Override
 	public void update(Facility entity) throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Facility> facilities = getAll();
+		for(Facility facility : facilities) {
+			if(facility.getName().equals(entity.getName())) {
+				facilities.set(facilities.indexOf(facility), entity);
+				break;
+			}
+		}
+		saveAll(facilities);
 	}
 
 	@Override

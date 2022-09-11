@@ -42,7 +42,14 @@ public class UserDAO implements IDao<User, String>{
 	@Override
 	public ArrayList<User> getAllNonDeleted() throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<User> allUsers = getAll();
+		ArrayList<User> nonDeleted = new ArrayList<User>();
+		
+		for (User user : allUsers) 
+			if(!user.isDeleted())
+				nonDeleted.add(user);
+		
+		return nonDeleted;
 	}
 
 	@Override

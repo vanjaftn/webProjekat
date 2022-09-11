@@ -19,6 +19,8 @@ const Navbar = {template: '<navbar></navbar>'}
 const NewTraining = {template: '<newTraining></newTraining>'}
 const TrainerTrainings = {template: '<trainerTrainings></trainerTrainings>'}
 const CustomerTrainings = {template: '<customerTrainings></customerTrainings>'}
+const AdminComments = { template: '<admin-comments></admin-comments>' }
+const ManagerTrainerComments = { template: '<manager-trainer-comments></manager-trainer-comments>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -42,7 +44,9 @@ const router = new VueRouter({
 		{ path: '/singleFacility', component: FacilityPage},
 		{ path: '/newTraining', component: NewTraining},
 		{ path: '/trainerTrainings', component: TrainerTrainings},
-		{ path: '/customerTrainings', component: CustomerTrainings}
+		{ path: '/customerTrainings', component: CustomerTrainings},
+		{ path: '/adminComments', component: AdminComments},
+		{ path: '/comments', component: ManagerTrainerComments}		
 	  ]
 });
 
