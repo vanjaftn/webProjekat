@@ -89,7 +89,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getGymFacilityTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name,
+						customer: this.customer.username,
 					}})
 					.then(response => {
 					this.trainings = response.data
@@ -101,7 +101,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getDanceFacilityTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name,
+						customer: this.customer.username,
 					}})
 					.then(response => {
 					this.trainings = response.data
@@ -113,7 +113,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getSportsFacilityTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name,
+						customer: this.customer.username,
 					}})
 					.then(response => {
 					this.trainings = response.data
@@ -125,7 +125,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getPoolFacilityTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name,
+						customer: this.customer.username,
 					}})
 					.then(response => {
 					this.trainings = response.data
@@ -138,7 +138,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getGymTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name
+						customer: this.customer.username
 					}})
 					.then(response => {
 					this.trainings = response.data
@@ -150,7 +150,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getPersonalTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name
+						customer: this.customer.username
 					}})
 					.then(response => {
 					this.trainings = response.data
@@ -162,7 +162,7 @@ Vue.component("customerTrainings", {
 			axios
 				.get('/getGroupTrainingsCustomer',
 					{ params: {
-						customer: this.customer.name
+						customer: this.customer.username
 					}})
 					.then(response => {
 					this.trainings = response.data

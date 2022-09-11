@@ -131,6 +131,8 @@ methods: {
 					this.customer = response.data
 					
 					console.log(this.customer)
+					customer = this.customer
+					localStorage.setItem("customerUsername", customer.username)
 				
 				})
 			}

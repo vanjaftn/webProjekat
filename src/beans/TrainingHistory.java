@@ -1,20 +1,30 @@
 package beans;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class TrainingHistory implements Serializable{
 	
-	private Date applicationDate;
+	private LocalDateTime applicationDate;
 	private String training;
 	private String customer;
 	private String trainer;
 	private String id;
 	
-	public Date getApplicationDate() {
+	
+	public TrainingHistory(LocalDateTime applicationDate, String training, String customer, String trainer, String id) {
+		super();
+		this.applicationDate = applicationDate;
+		this.training = training;
+		this.customer = customer;
+		this.trainer = trainer;
+		this.id = id;
+	}
+	public LocalDateTime getApplicationDate() {
 		return applicationDate;
 	}
-	public void setApplicationDate(Date applicationDate) {
+	public void setApplicationDate(LocalDateTime applicationDate) {
 		this.applicationDate = applicationDate;
 	}
 	public String getTraining() {
