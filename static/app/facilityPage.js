@@ -81,7 +81,7 @@ Vue.component("f-page", {
 										        	<p class="card-text">{{membership.appointmentNumber}} appointments</p>
 												</li>
 											  </ul>
-										      <div v-if = "this.jwt=='-1' && this.jwt == null" class="card-footer">
+										      <div v-if="role == 'CUSTOMER' " class="card-footer">
 													
 														<button v-if="activeFacilityMembershipButton || changeButton" v-on:click="switchMembership(membership)" type="button" class="btn btn-success">Switch</button>
 														<button v-else v-on:click="buyMembership(membership)" type="button" class="btn btn-success">Buy</button>
@@ -150,7 +150,7 @@ Vue.component("f-page", {
 							  <p><label>Price: </label>{{t.price}}</p>
 							  <img v-bind:src="t.picture" class="img facility-hero-img" />
 							  <br></br>
-							  <button v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
+							  <button v-if="this.role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
 							  
 				            </div>
 						  </article>
@@ -194,8 +194,7 @@ Vue.component("f-page", {
 							  <p><label>Trainer: </label>{{t.trainer}}</p>
 							  <p><label>Price: </label>{{t.price}}</p>
 							  <img v-bind:src="t.picture" class="img facility-hero-img" />
-							  <button v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
-							  
+							  <button v-if="role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
 				            </div>
 
 								

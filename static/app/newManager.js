@@ -75,10 +75,12 @@ Vue.component("newManager-page", {
 		userRegistration: function (event) {
 			event.preventDefault();
 			
-			let getDateById = document.getElementById("dateOfBirthID").value;
+			var getDateById = document.getElementById("dateOfBirthID").value;
 			if(getDateById) {
 				var date = new Date(getDateById).toISOString().substr(0,10);
-			}		
+			}	
+			
+				
 			
 			if(this.usernameRegistration == ''){
 				this.errorMessageRegistration = "Please enter username.";
@@ -92,14 +94,19 @@ Vue.component("newManager-page", {
 		    }  else if(this.lastNameRegistration == ''){
 				this.errorMessageRegistration = "Please enter your last name.";
 			   this.valid = false;
-		    }
-		    else if(this.genderRegistration == ''){
+		    } else if(this.genderRegistration == ''){
 				this.errorMessageRegistration = "Please choose gender.";
 				this.valid = false;
 		    }else if(!date){
 				this.errorMessageRegistration = "Please salect date of birth.";
 				this.valid = false;
-		    } else {
+		    } else if(this.firstNameRegistration[0] < 'A' || this.firstNameRegistration[0] > 'Z'){
+				valid=false;
+				this.errorMessageRegistration="First name must start with a capital letter"
+			} else if(this.lastNameRegistration[0] < 'A' || this.lastNameRegistration[0] > 'Z'){
+				valid=false;
+				this.errorMessageRegistration="Last name must start with a capital letter"
+			} else {
 			
 
 			let gender;

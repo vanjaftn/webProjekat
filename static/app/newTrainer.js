@@ -100,7 +100,13 @@ Vue.component("newTrainer-page", {
 		    }else if(!date){
 				this.errorMessageRegistration = "Please salect date of birth.";
 				this.valid = false;
-		    } else {
+		     } else if(this.firstNameRegistration[0] < 'A' || this.firstNameRegistration[0] > 'Z'){
+				valid=false;
+				this.errorMessageRegistration="First name must start with a capital letter"
+			} else if(this.lastNameRegistration[0] < 'A' || this.lastNameRegistration[0] > 'Z'){
+				valid=false;
+				this.errorMessageRegistration="Last name must start with a capital letter"
+			} else {
 				
 				
 				
@@ -120,6 +126,17 @@ Vue.component("newTrainer-page", {
 					dateOfBirth: date, 
 					role: 'TRAINER'	
 				}
+				
+				let registratedTrainer = {
+					username: this.usernameRegistration,
+					password: this.passwordRegistration,
+					name: this.firstNameRegistration,
+					lastName: this.lastNameRegistration,
+					gender: gender,
+					dateOfBirth: date, 
+					role: 'TRAINER',
+					isDeleted: false
+				}
 				axios 
 	    			.post('/user/register', JSON.stringify(registratedUser))
 	    			.then(response => {
@@ -136,6 +153,14 @@ Vue.component("newTrainer-page", {
 							this.lastNameRegistration = '',
 							this.genderRegistration = '',
 							this.dateRegistration = ''
+							
+							axios
+								.post('/trainer/createTrainer', JSON.stringify(registratedTrainer))
+								.then(response => {
+									if(response.data != null) {
+										console.log(response.data)
+									}
+								})
 						}
 	    			})
 	    			.catch(error => {
