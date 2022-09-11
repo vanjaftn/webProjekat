@@ -64,7 +64,7 @@ Vue.component("login-page", {
 	`,
 	methods: {
 		homePage : function (event) {
-			window.location.href = "#/";
+			router.push("/")
 		},
 		passwordShowToggle : function (event) {
 			this.passwordShow = !this.passwordShow;	

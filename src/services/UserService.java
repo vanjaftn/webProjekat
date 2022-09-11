@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Role;
+import beans.Trainer;
 import beans.User;
 import dao.UserDAO;
 import dto.LoginDTO;
@@ -209,5 +210,5 @@ public class UserService {
 		
 		return allCustomers;
 	}
-
+	
 }

@@ -77,7 +77,7 @@ Vue.component("f-page", {
 										        	<p class="card-text">{{membership.appointmentNumber}} appointments</p>
 												</li>
 											  </ul>
-										      <div class="card-footer">
+										      <div v-if = "this.jwt=='-1' && this.jwt == null" class="card-footer">
 													
 														<button v-if="activeFacilityMembershipButton || changeButton" v-on:click="switchMembership(membership)" type="button" class="btn btn-success">Switch</button>
 														<button v-else v-on:click="buyMembership(membership)" type="button" class="btn btn-success">Buy</button>

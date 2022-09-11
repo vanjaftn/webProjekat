@@ -6,14 +6,15 @@ Vue.component("navbar", {
 	      isTrainer: false,
 	      isCustomer: false,
 		  trainer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:''},
-		  customer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:'', points: 0, customerType: {}, membership: {}}
-	    }
+		  customer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:'', points: 0, customerType: {}, membership: {}},	
+		  isAdmin: false,    
+}	
 	},
 	    template: `
 	    <div id="home">
 				<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 				  <div class="container-fluid">
-				    <a class="navbar-brand" href="/#">LOGO</a>
+				    <a class="navbar-brand"></a>
 				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				      <span class="navbar-toggler-icon"></span>
 				    </button>
@@ -30,6 +31,26 @@ Vue.component("navbar", {
 				      	</li>
 				      </ul>
 					  <ul class="navbar-nav" v-if = "this.jwt!='-1' && this.jwt != null">
+						
+						<li v-if="this.isAdmin == true" class="nav-item dropdown">
+				          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				           <i class="fa fa-plus me-1"></i>New
+				          </a>
+				          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+				            <li v-on:click="addNewManager"><a class="dropdown-item pointer" >New manager</a></li>
+				            <li v-on:click="addNewTrainer"><a class="dropdown-item pointer" >New trainer</a></li>
+				            <li><hr class="dropdown-divider"></li>
+				            <li v-on:click="addNewFacility"><a class="dropdown-item pointer">New facility</a></li>
+				          </ul>
+				        </li>
+						<li v-if="this.isAdmin == true" class=nav-item>
+							<a v-on:click="allUsers" class="nav-link ms-3 pointer"><i class="fa fa-users me-1" aria-hidden="true"></i>All users</a>
+						</li>
+						<li v-if="this.isAdmin == true" class=nav-item>
+							<a v-on:click="comments" class="nav-link ms-3 pointer"><i class="fa fa-comments me-1" aria-hidden="true"></i>Comments</a>
+						</li>
+					
+						
 						<li class=nav-item>
 							<a class="nav-link ms-3 pointer" v-on:click="profilePage"><i class="fa fa-user me-1" aria-hidden="true"></i>Profile</a>
 						</li>
@@ -54,9 +75,32 @@ mounted () {
 
 	this.checkIfTrainer()
 	this.checkIfCustomer()
+	this.checkIfAdmin()
 
 },
 methods: {	
+		checkIfAdmin: function(){
+			if(this.role == 'ADMIN'){
+				console.log("admin")
+				this.isAdmin = true
+				
+			}
+		},
+		comments: function (event) {
+			router.push("/adminComments")
+		},
+		addNewTrainer: function (event) {
+			router.push("/newTrainer")
+		},
+		addNewManager: function (event) {
+			router.push("/newManager")
+		},
+		addNewFacility: function (event) {
+			router.push("/newFacility")
+		},
+		allUsers: function (event) {
+			router.push("/usersProfileView")
+		},
 		checkIfTrainer: function(){
 			if(this.role == 'TRAINER')
 			{

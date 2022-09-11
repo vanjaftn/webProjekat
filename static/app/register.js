@@ -82,7 +82,7 @@ Vue.component("register-page", {
 	`,
 	methods: {
 		homePage : function (event) {
-			window.location.href = "#/";
+			router.push("/")
 		},
 		passwordShowToggleReg : function (event) {
 			this.showPasswordReg = !this.showPasswordReg;	

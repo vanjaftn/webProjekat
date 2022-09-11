@@ -2,6 +2,7 @@ package dao;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -66,7 +67,14 @@ public class TrainerDAO implements IDao<Trainer, String>{
 	@Override
 	public void update(Trainer entity) throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Trainer> trainers = getAll();
+		for(Trainer trainer : trainers) {
+			if(trainer.getUsername().equals(entity.getUsername())) {
+				trainers.set(trainers.indexOf(trainer), entity);
+				break;
+			}
+		}
+		saveAll(trainers);
 	}
 
 	@Override
@@ -84,7 +92,10 @@ public class TrainerDAO implements IDao<Trainer, String>{
 	@Override
 	public void saveAll(ArrayList<Trainer> entities) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		
+		PrintWriter writer = new PrintWriter(path);
+		String allEntities = new Gson().toJson(entities, new TypeToken<List<Manager>>(){}.getType());
+		writer.println(allEntities);
+		writer.close();	
 	}
 
 }
