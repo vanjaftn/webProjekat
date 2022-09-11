@@ -23,6 +23,7 @@ Vue.component("f-page", {
 			errorMessage: '',
 			commentContent:'',
 			commentGrade:'',
+		  	mode: ''
 			
 		}
 	}, 
@@ -135,6 +136,11 @@ Vue.component("f-page", {
 										<label style="color: black;">Price ascending</label></br>
 										<input type="radio" name = "price" @change="SortByPriceDesc($event)">
 										<label style="color: black;">Price descending</label></br>
+										<input type="radio" name = "sort" @change="SortByFacilityAsc($event)">
+										<label style="color: black;">Facility name ascending</label></br>
+										<input type="radio" name = "sort" @change="SortByFacilityDesc($event)">
+										<label style="color: black;">Facility name descending</label></br>
+										<button type="submit" v-on:click="sortTrainings" class="btn btn-primary">Sort</button>
 										</div>
 							</div>
 
@@ -180,6 +186,11 @@ Vue.component("f-page", {
 										<label style="color: black;">Price ascending</label></br>
 										<input type="radio" name = "price" @change="SortByPriceDesc($event)">
 										<label style="color: black;">Price descending</label></br>
+										<input type="radio" name = "price" @change="SortByDateAsc($event)">
+										<label style="color: black;">Date descending</label></br>
+										<input type="radio" name = "price" @change="SortByDateDesc($event)">
+										<label style="color: black;">Date descending</label></br>
+										<button type="submit" v-on:click="sortTrainings" class="btn btn-primary">Sort</button>
 										</div>
 							</div>
 
@@ -384,29 +395,38 @@ Vue.component("f-page", {
 					console.log(this.trainings)
 			})
 		},
-		SortByPriceAsc: function() {
+		sortTrainings: function(event) {
+		
+			let sortParameters =
+			{
+				parameter : this.parameter,
+				mode : this.mode,
+				trainings : this.trainings,
+				name : this.facility.name
+			}
 			
 			axios
-				.get('/sortTrainingsByPriceAsc',
-					{ params: {
-						facility: this.facility.name
-					}})
+				.post('/sortTrainings', JSON.stringify(sortParameters))
 					.then(response => {
 					this.trainings = response.data
 					console.log(this.trainings)
 			})
 		},
+		SortByPriceAsc: function() {
+			this.parameter = "price"
+			this.mode = "asc"
+		},
 		SortByPriceDesc: function() {
-			
-			axios
-				.get('/sortTrainingsByPriceDesc',
-					{ params: {
-						facility: this.facility.name
-					}})
-					.then(response => {
-					this.trainings = response.data
-					console.log(this.trainings)
-			})
+			this.parameter = "price"
+			this.mode = "desc"
+		},
+		SortByDateDesc: function(){
+			this.parameter = "date"
+			this.mode = "desc"
+		},
+		SortByDateAsc: function(){
+			this.parameter = "date"
+			this.mode = "asc"
 		},
 		checkIfManager: function(){
 		if(this.role=='MANAGER')

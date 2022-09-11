@@ -37,7 +37,7 @@ import services.UserService;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		port(8080);
+		port(8087);
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath()); 
 		

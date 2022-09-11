@@ -1,6 +1,7 @@
 package services;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,8 +34,7 @@ public class TrainingService {
 	private CustomerDAO customerDAO = new CustomerDAO("./data/customer.json");
 	private CustomerService customerService = new CustomerService(customerDAO);
 	private TrainingHistoryDAO trainingHistoryDAO = new TrainingHistoryDAO("./data/trainingHistory.json");
-	//private TrainingHistoryService trainingHistory = new TrainingHistoryService(trainingHistoryDAO);
-	
+	private TrainingHistoryService trainingHistoryService = new TrainingHistoryService(trainingHistoryDAO);
 	public TrainingService(TrainingDAO trainingDAO) {
 		super();
 		this.trainingDAO = trainingDAO;
@@ -142,17 +142,23 @@ public class TrainingService {
 		return groupTrainings;
 	}
 	
-	public ArrayList<Training> getTrainingsSortedByPriceAsc(String facility) throws JsonSyntaxException, IOException{
-		ArrayList<Training> sortedTrainings = getFacilityTrainings(facility);
+	public ArrayList<Training> getTrainingsSorted(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
 		
-		sortedTrainings.sort((o1, o2) -> Integer.compare(o1.getPrice(), o2.getPrice()));
-		return sortedTrainings;
-	}
+		ArrayList<Training> trainings = getFacilityTrainings(sortParameter.getName());
+		ArrayList<TrainingHistory> traininsForSort = new ArrayList<TrainingHistory>();
+		ArrayList<Training> sortedTrainings = sortParameter.getTrainings();
+		Facility facility = facilityService.getFacilityByName(sortParameter.getName());
 
-	public ArrayList<Training> getTrainingsSortedByPriceDesc(String facility) throws JsonSyntaxException, IOException{
-		ArrayList<Training> sortedTrainings = getFacilityTrainings(facility);
-		
-		sortedTrainings.sort((o1, o2) -> Integer.compare(o2.getPrice(), o1.getPrice()));
+		if(sortParameter.getParameter().equals("price"))
+			if(sortParameter.getMode().equals("asc"))
+				sortedTrainings.sort((o1, o2) -> Integer.compare(o1.getPrice(), o2.getPrice()));
+			if(sortParameter.getMode().equals("desc"))
+				sortedTrainings.sort((o1, o2) -> Integer.compare(o2.getPrice(), o1.getPrice()));
+		if(sortParameter.getParameter().equals("facility"))
+			if(sortParameter.getMode().equals("asc"))
+				sortedTrainings.sort((o1, o2)-> o1.getSportsFacility().compareTo(o2.getSportsFacility()));
+			if(sortParameter.getMode().equals("desc"))
+				sortedTrainings.sort((o1, o2)-> o2.getSportsFacility().compareTo(o1.getSportsFacility()));
 		return sortedTrainings;
 	}
 	
@@ -190,20 +196,6 @@ public class TrainingService {
 			}
 		}
 		return groupTrainings;
-	}
-	
-	public ArrayList<Training> getTrainingsSortedByPriceAscCustomer(String customerName) throws JsonSyntaxException, IOException{
-		ArrayList<Training> sortedTrainings = getCustomerTrainings(customerName);
-		
-		sortedTrainings.sort((o1, o2) -> Integer.compare(o1.getPrice(), o2.getPrice()));
-		return sortedTrainings;
-	}
-
-	public ArrayList<Training> getTrainingsSortedByPriceDescCustomer(String customerName) throws JsonSyntaxException, IOException{
-		ArrayList<Training> sortedTrainings = getCustomerTrainings(customerName);
-		
-		sortedTrainings.sort((o1, o2) -> Integer.compare(o2.getPrice(), o1.getPrice()));
-		return sortedTrainings;
 	}
 	
 	public ArrayList<Training> getGymTrainingsTrainer(String trainerName) throws JsonSyntaxException, IOException{
@@ -258,7 +250,7 @@ public class TrainingService {
 				sortedTrainings.sort((o1, o2)-> o2.getSportsFacility().compareTo(o1.getSportsFacility()));
 		return sortedTrainings;
 	}
-public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
+	public ArrayList<Training> getSortedTrainingsCustomer(TrainingSortDTO sortParameter) throws JsonSyntaxException, IOException{
 		
 		ArrayList<Training> sortedTrainings = sortParameter.getTrainings();
 

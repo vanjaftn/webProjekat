@@ -120,21 +120,11 @@ public class TrainingController {
 				return null;
 			}
 		});
-		get("/sortTrainingsByPriceAsc", (req, res) -> {
+		post("/sortTrainings", (req, res) -> {
 			res.type("application/json");
 			try {
-				String facility = req.queryParams("facility");
-				return gson.toJson(trainingService.getTrainingsSortedByPriceAsc(facility));
-			}catch(Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		});
-		get("/sortTrainingsByPriceDesc", (req, res) -> {
-			res.type("application/json");
-			try {
-				String facility = req.queryParams("facility");
-				return gson.toJson(trainingService.getTrainingsSortedByPriceDesc(facility));
+				TrainingSortDTO sortParameters = gson.fromJson(req.body(), TrainingSortDTO.class);
+				return  gson.toJson(trainingService.getTrainingsSorted(sortParameters));
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;
@@ -165,26 +155,6 @@ public class TrainingController {
 			try {
 				String customer = req.queryParams("customer");
 				return gson.toJson(trainingService.getGroupTrainingsCustomer(customer));
-			}catch(Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		});
-		get("/sortTrainingsByPriceAscCustomer", (req, res) -> {
-			res.type("application/json");
-			try {
-				String customer = req.queryParams("customer");
-				return gson.toJson(trainingService.getTrainingsSortedByPriceAscCustomer(customer));
-			}catch(Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		});
-		get("/sortTrainingsByPriceDescCustomer", (req, res) -> {
-			res.type("application/json");
-			try {
-				String customer = req.queryParams("customer");
-				return gson.toJson(trainingService.getTrainingsSortedByPriceDescCustomer(customer));
 			}catch(Exception e) {
 				e.printStackTrace();
 				return null;
