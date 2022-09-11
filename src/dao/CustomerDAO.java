@@ -2,6 +2,7 @@ package dao;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -65,7 +66,14 @@ public class CustomerDAO implements IDao<Customer, String> {
 	@Override
 	public void update(Customer entity) throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Customer> customers = getAll();
+		for(Customer customer : customers) {
+			if(customer.getUsername().equals(entity.getUsername())) {
+				customers.set(customers.indexOf(customer), entity);
+				break;
+			}
+		}
+		saveAll(customers);
 	}
 
 	@Override
@@ -83,7 +91,10 @@ public class CustomerDAO implements IDao<Customer, String> {
 	@Override
 	public void saveAll(ArrayList<Customer> entities) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		
+		PrintWriter writer = new PrintWriter(path);
+		String allEntities = new Gson().toJson(entities, new TypeToken<List<Customer>>(){}.getType());
+		writer.println(allEntities);
+		writer.close();
 	}
 
 }

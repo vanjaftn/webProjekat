@@ -15,7 +15,7 @@ import services.FacilityService;
 
 public class FacilityController {
 
-	private FacilityService facilityService;
+	public static  FacilityService facilityService;
 	private static Gson gson = new Gson();
 	
 	public FacilityController(FacilityService facilityService) {

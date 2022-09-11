@@ -6,7 +6,10 @@ Vue.component("f-page", {
 			role: window.localStorage.getItem('role'),
 			isManager: false,
 			trainings: {},
-			sortingMode: ''
+			sortingMode: '',
+			user: null,
+			comments: null,
+			
 		}
 	}, 
 	template: `
@@ -81,21 +84,21 @@ Vue.component("f-page", {
 							  
 				            </div>
 						  </article>
-						<article class="second-column">
-				            <div class="second-column-content">
-				              <h4>Coment</h4>
-				              <p class="single-comment">comment</p>
-				              <p class="single-comment">commnet</p>
-				              <p class="single-comment">comment</p>
-				            </div>
-				            <div class="second-column-content">
-				              <h4>Comment</h4>
-				              <p class="single-tool">comm</p>
-				              <p class="single-tool">ko</p>
-				              <p class="single-tool">loo</p>
-				              <p class="single-tool">ko</p>
-				            </div>
-				        </article>
+						<article class=" article-content second-column">
+							<h4>Comments:</h4>
+							<div v-for="comment in comments">
+								<div class="card">
+									  <div class="card-header">
+									    {{comment.user}}
+									  </div>
+									  <div class="card-body">
+									    <blockquote class="blockquote mb-0">
+									      <p>{{comment.content}}</p>
+									    </blockquote>
+									  </div>
+								</div>
+							</div>
+					     </article>
 						
 					</section>
 				</div>
@@ -209,8 +212,16 @@ Vue.component("f-page", {
              this.getTrainings();
              })
              
-         
+       axios
+			.get('/comments/getApprovedComments/' + window.localStorage.getItem('facilityId'))
+			.then(response => {
+				this.comments = response.data
+			})
+			.catch(error => {
+				console.log(error)
+			})
              
+		
         
 	}
 	

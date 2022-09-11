@@ -15,7 +15,7 @@ Vue.component("admin-page", {
 	}, 
 	template: `
 		<div id="adminHome">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 				  <div class="container-fluid">
 				    <a class="navbar-brand" >LOGO</a>
 				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,9 @@ Vue.component("admin-page", {
 				        </li>
 						<li class=nav-item>
 							<a v-on:click="allUsers" class="nav-link ms-3 pointer"><i class="fa fa-users me-1" aria-hidden="true"></i>All users</a>
+						</li>
+						<li class=nav-item>
+							<a v-on:click="comments" class="nav-link ms-3 pointer"><i class="fa fa-comments me-1" aria-hidden="true"></i>Comments</a>
 						</li>
 						<li class=nav-item>
 							<a v-on:click="profilePage" class="nav-link ms-3 pointer"><i class="fa fa-user me-1" aria-hidden="true"></i>Profile</a>
