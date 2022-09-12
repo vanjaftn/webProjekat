@@ -61,7 +61,9 @@ public class TrainerDAO implements IDao<Trainer, String>{
 	@Override
 	public void create(Trainer entity) throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Trainer> trainers = getAll();
+		trainers.add(entity);
+		saveAll(trainers);
 	}
 
 	@Override

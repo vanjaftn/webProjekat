@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 
 import beans.Customer;
 import beans.Facility;
+import beans.Manager;
 import beans.Trainer;
 
 public class CustomerDAO implements IDao<Customer, String> {
@@ -41,7 +42,14 @@ public class CustomerDAO implements IDao<Customer, String> {
 	@Override
 	public ArrayList<Customer> getAllNonDeleted() throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Customer> allManager = getAll();
+		ArrayList<Customer> nonDeleted = new ArrayList<Customer>();
+		
+		for (Customer manager : allManager) 
+			if(!manager.isDeleted())
+				nonDeleted.add(manager);
+		
+		return nonDeleted;
 	}
 
 	@Override
@@ -60,7 +68,9 @@ public class CustomerDAO implements IDao<Customer, String> {
 	@Override
 	public void create(Customer entity) throws JsonSyntaxException, IOException {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Customer> managers = getAll();
+		managers.add(entity);
+		saveAll(managers);	
 	}
 
 	@Override

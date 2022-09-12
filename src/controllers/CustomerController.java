@@ -129,6 +129,27 @@ public class CustomerController {
 			}
 			
 		});
+		
+		post("/customer/createCustomer", (req,res) -> {
+			res.type("application/json");
+			
+			try {
+				Customer newCustomer = gson.fromJson(req.body(), Customer.class);
+				
+				for (Customer manager : customerService.getAllCustomers()) {
+					if(manager.getUsername().equals(newCustomer.getUsername())) {
+						return "";
+					}
+				}
+				customerService.createCustomer(newCustomer);							
+				return gson.toJson(newCustomer);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+		});
 	}
 
 }

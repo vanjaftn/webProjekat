@@ -7,7 +7,8 @@ Vue.component("navbar", {
 	      isCustomer: false,
 		  trainer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:''},
 		  customer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:'', points: 0, customerType: {}, membership: {}},	
-		  isAdmin: false,    
+		  isAdmin: false,
+		  isManager: false,    
 }	
 	},
 	    template: `
@@ -31,6 +32,10 @@ Vue.component("navbar", {
 				      	</li>
 				      </ul>
 					  <ul class="navbar-nav" v-if = "this.jwt!='-1' && this.jwt != null">
+			
+						<li v-if="this.isManager == true" class=nav-item>
+							<a v-on:click="commentsManager" class="nav-link ms-3 pointer"><i class="fa fa-comments me-1" aria-hidden="true"></i>Comments</a>
+						</li>
 						
 						<li v-if="this.isAdmin == true" class="nav-item dropdown">
 				          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -76,9 +81,20 @@ mounted () {
 	this.checkIfTrainer()
 	this.checkIfCustomer()
 	this.checkIfAdmin()
+	this.checkIfManager()
 
 },
 methods: {	
+		commentsManager: function (event) {
+			router.push("/commentsManager")
+		},
+		checkIfManager: function(){
+			if(this.role == 'MANAGER'){
+				console.log("manager")
+				this.isManager = true
+				
+			}
+		},
 		checkIfAdmin: function(){
 			if(this.role == 'ADMIN'){
 				console.log("admin")
@@ -130,7 +146,7 @@ methods: {
 				.then(response => {
 					this.customer = response.data
 					
-					console.log(this.customer)
+					console.log(response.data)
 					customer = this.customer
 					localStorage.setItem("customerUsername", customer.username)
 				

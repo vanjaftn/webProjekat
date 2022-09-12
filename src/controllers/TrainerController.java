@@ -56,6 +56,27 @@ public class TrainerController {
 			}
 			
 		});
+		
+		post("/trainer/createTrainer", (req,res) -> {
+			res.type("application/json");
+			
+			try {
+				Trainer newTrainer = gson.fromJson(req.body(), Trainer.class);
+				
+				for (Trainer manager : trainerService.getAllTrainers()) {
+					if(manager.getUsername().equals(newTrainer.getUsername())) {
+						return "";
+					}
+				}
+				trainerService.createTrainer(newTrainer);							
+				return gson.toJson(newTrainer);
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+			
+		});
 	}
 		
 

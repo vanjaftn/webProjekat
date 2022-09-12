@@ -14,21 +14,7 @@ Vue.component("register-page", {
 	},
 	template:  `
 		<div id="register-page">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-			  <div class="container-fluid">
-			    <a class="navbar-brand" >LOGO</a>
-			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			      <span class="navbar-toggler-icon"></span>
-			    </button>
-			    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-			      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-			        <li class="nav-item">
-					  <a class="nav-link active pointer" v-on:click="homePage">Home</a>
-			        </li>
-			      </ul>
-			    </div>
-			  </div>
-			</nav>
+			<navbar/>
 			
 			
 			<div class="container login-container">
@@ -81,9 +67,6 @@ Vue.component("register-page", {
 		</div>
 	`,
 	methods: {
-		homePage : function (event) {
-			router.push("/")
-		},
 		passwordShowToggleReg : function (event) {
 			this.showPasswordReg = !this.showPasswordReg;	
 		},	
@@ -123,6 +106,12 @@ Vue.component("register-page", {
 			} else 	if(!date){
 				valid=false;
 				this.errorMessage="Please choose date of birth"
+			} else 	if(this.firstNameRegistration[0] < 'A' || this.firstNameRegistration[0] > 'Z'){
+				valid=false;
+				this.errorMessage="First name must start with a capital letter"
+			} else 	if(this.lastNameRegistration[0] < 'A' || this.lastNameRegistration[0] > 'Z'){
+				valid=false;
+				this.errorMessage="Last name must start with a capital letter"
 			}	
 			
 			if(valid){
@@ -136,6 +125,18 @@ Vue.component("register-page", {
 					dateOfBirth: date, 
 					role: 'CUSTOMER'	
 				}
+				
+				let registratedCustomer = {
+					username: this.usernameRegistration,
+					password: this.passwordRegistration,
+					name: this.firstNameRegistration,
+					lastName: this.lastNameRegistration,
+					gender: gender,
+					dateOfBirth: date, 
+					role: 'CUSTOMER',
+					points: 0,
+					membership: []	
+				}
 				axios 
 	    			.post('/user/register', JSON.stringify(registratedUser))
 	    			.then(response => {
@@ -143,8 +144,14 @@ Vue.component("register-page", {
 	    					this.errorMessage = "Username already exists"
 						
 	    				} else {
-							window.location.href = "#/";
-							
+							axios
+								.post('/customer/createCustomer', JSON.stringify(registratedCustomer))
+								.then(response => {
+										if(response.data != null) {
+											console.log(response.data)
+										}
+								})
+							router.push("/")
 	    				}
 	    			})
 	    			.catch(error => {
