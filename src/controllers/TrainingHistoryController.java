@@ -26,6 +26,17 @@ public class TrainingHistoryController {
 			return "";
 		}
 	});
+	
+	get("getCustomerTrainingsHistory", (req, res) -> {
+		res.type("application/json");
+		try {
+			String name = req.queryParams("customer");
+			return gson.toJson(trainingHistoryService.getCustomerTrainingHistory(name));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	});
 }
 	
 }

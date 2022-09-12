@@ -3,7 +3,9 @@ Vue.component("customerTrainings", {
 		return {
 			jwt: window.localStorage.getItem('jwt'),
 			role: window.localStorage.getItem('role'),
+			searchName: '',
 			trainings: {},
+			trainingsHistory: {},
 			parameter: '',
 			mode: '',
 		  	customer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:'', points: 0, customerType: {}, membership: {}}
@@ -19,7 +21,7 @@ Vue.component("customerTrainings", {
 						<article class="article-content">
 							<h4>Trainings</h4>
 <!-- .............................................FILTER TRAININGS ..............................................................................-->
-									<div class = "row" style="max-width: 400px;background-color: #a1d2e3; border-radius: 20px">
+									<div class = "row" style="max-width: 800px;background-color: #a1d2e3; border-radius: 20px">
 									<div class = "col-auto">
 										<label style="color: black;">Filter by training type</label></br>	
 										<input type="radio" name = "trainingType" @change="OnlyGymTrainingType($event)">
@@ -53,18 +55,24 @@ Vue.component("customerTrainings", {
 										<button type="submit" v-on:click="sortTrainings" class="btn btn-primary">Sort</button>
 										
 										</div>
+<!-- .............................................SEARCH ..............................................................................-->		
+								<div class = "col-auto">
+							    		<input v-model="searchName" v-on:keyup="enterPressedSearch" type="text" class="form-control" id="facilitiName" placeholder="Name...">
+							  		
+							    <button type="submit" v-on:click="searchFacilities" class="btn btn-primary">Search</button>
+								</div>
 							</div>
+				            <div class="single-training" v-for="th in trainingsHistory">
 							<div class="single-training" v-for="t in trainings">
 				              <header>
 				                <p>{{t.name}}</p>
-				                <div>
-				                </div>
+				                <div></div>
 				              </header>
-				              <p><label>Description: </label>{{t.description}}</p>
-							  <p><label>Price: </label>{{t.price}}</p>
 							  <p><label>Facility: </label>{{t.sportsFacility}}</p>
+				            <p><label>Application date: </label>{{th.applicationDate.date.day}}.{{th.applicationDate.date.month}}.{{th.applicationDate.date.year}}</p>
 							  <img v-bind:src="t.picture" class="img facility-hero-img" />
 							  
+				            </div>
 				            </div>
 						  </article>
 						
@@ -84,6 +92,36 @@ Vue.component("customerTrainings", {
 					this.trainings = response.data
 					console.log(this.trainings)
 				})
+		},
+		getTrainingsHistory: function(){
+			axios
+				.get('/getCustomerTrainingsHistory',
+					{ params: {
+						customer: this.customer.username
+					}})
+				.then(response => {
+					this.trainingsHistory = response.data
+					console.log(this.trainingsHistory)
+				})
+		},
+		enterPressedSearch: function (event) {
+			if (event.keyCode === 13) {
+				this.searchFacilities();
+			}
+		},
+		searchFacilities : function (event) {
+			
+				let searchParameters = {
+						name : this.searchName,
+						trainings : this.trainings		
+    			}
+
+    			axios 
+		    		.post('/searchTrainings', JSON.stringify(searchParameters))
+		    		.then(response => {
+		    		   this.trainings = response.data;
+						console.log(this.trainings)
+		    	})
 		},
 		OnlyGymFacilityType: function(event){
 			axios
@@ -221,6 +259,7 @@ Vue.component("customerTrainings", {
 					
 					console.log(this.customer)
 					this.getTrainings()
+					this.getTrainingsHistory()
 				
 				})
 	}

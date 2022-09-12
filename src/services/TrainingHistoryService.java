@@ -58,5 +58,17 @@ public class TrainingHistoryService {
 		trainingHistoryDAO.create(newTrainingHistory);
 		return true;
 	}
+	
+	public ArrayList<TrainingHistory> getCustomerTrainingHistory(String customerName) throws JsonSyntaxException, IOException{
+		ArrayList<TrainingHistory> trainingsHistory = trainingHistoryDAO.getAll();
+		ArrayList<TrainingHistory> customerTrainings = new ArrayList<TrainingHistory>();
+
+		for(TrainingHistory t : trainingsHistory) {
+				if(t.getCustomer().equals(customerName))
+				customerTrainings.add(t);
+			}
+		
+		return customerTrainings;
+	}
 
 }
