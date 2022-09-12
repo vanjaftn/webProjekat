@@ -1,11 +1,13 @@
 package services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Customer;
+import beans.Manager;
 import beans.Membership;
 import dao.CustomerDAO;
 import dto.MembershipDTO;
@@ -79,6 +81,13 @@ public class CustomerService {
 		
 		return membership;
 	}
+	
+	public void createCustomer(Customer manager) throws JsonSyntaxException, IOException {
+		customerDAO.create(manager);
+	}
 
+	public ArrayList<Customer> getAllCustomers() throws JsonSyntaxException, IOException{
+		return customerDAO.getAllNonDeleted();
+	}
 
 }

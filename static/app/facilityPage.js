@@ -194,7 +194,7 @@ Vue.component("f-page", {
 							</div>
 
 							<button v-if= "this.isManager == true" v-on:click="createTraining" class="btn btn-primary">Add new training</button>
-<<<<<<< HEAD
+
 							<div v-if="this.role == 'CUSTOMER'">
                                 <div class="single-training" v-for="t in trainings">
                                       <header>
@@ -224,21 +224,6 @@ Vue.component("f-page", {
                                       <img v-bind:src="t.picture" class="img facility-hero-img" />
                                   </div>
                             </div>
-=======
-							<div class="single-training" v-for="t in trainings">
-				              <header>
-				                <p>{{t.name}}</p>
-				                <div>
-				                </div>
-				              </header>
-				              <p><label>Description: </label>{{t.description}}</p>
-							  <p><label>Trainer: </label>{{t.trainer}}</p>
-							  <p><label>Price: </label>{{t.price}}</p>
-							  <img v-bind:src="t.picture" class="img facility-hero-img" />
-							  <button v-if="role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
-				            </div>
->>>>>>> 10c28fb79b29a70fa0d3fdd390e37dbffac0c16f
-
 								
 						  </article>
 				
@@ -527,9 +512,7 @@ Vue.component("f-page", {
 				
 			}
 			});
-		if(this.role == 'CUSTOMER')
-		{
-        axios
+		axios
 			.get('/memberships/getFacilityMemberships/' + window.localStorage.getItem('facilityId'))
 			.then(response => {
 				this.memberships = response.data
@@ -538,7 +521,8 @@ Vue.component("f-page", {
 			.catch(error => {
 				console.log(error)
 			})
-			
+		if(this.role == 'CUSTOMER')
+		{			
 		axios
 			.get('/customer/getMembership')
 			.then(response => {

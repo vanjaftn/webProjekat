@@ -74,4 +74,22 @@ public class CommentService {
         }
         return id;
 	}
+	
+	public ArrayList<Comment> getRejectedFacilityComments(String facility) throws JsonSyntaxException, IOException {
+		ArrayList<Comment> approvedComments = new ArrayList<Comment>();
+		for(Comment comment : commentDAO.getAll()) {
+			if(comment.getFacility().equals(facility) && comment.getStatus().equals(CommentsStatus.REJECTED))
+				approvedComments.add(comment);
+		}
+		
+		return approvedComments;
+	}
+	
+	public ArrayList<Comment> getCommentsManager(String facility) throws JsonSyntaxException, IOException {
+		ArrayList<Comment> comments = new ArrayList<Comment>();
+		comments.addAll(getApprovedFacilityComments(facility));
+		comments.addAll(getRejectedFacilityComments(facility));
+		
+		return comments;
+	}
 }

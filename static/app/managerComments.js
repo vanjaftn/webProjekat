@@ -1,37 +1,13 @@
-Vue.component("manager-trainer-comments" , {
+Vue.component("manager-comments" , {
 	data: function () {
 		return {
 			comments: null,
+			manager: null,
 		}
 	},
 	template: `
 		<div id="managerTrainerComments">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-				  <div class="container-fluid">
-				    <a class="navbar-brand" >LOGO</a>
-				    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				      <span class="navbar-toggler-icon"></span>
-				    </button>
-				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-				      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				        <li v-on:click="" class="nav-item">
-				          <a class="nav-link active pointer">Home</a>
-				        </li>
-				      </ul>
-					  <ul class="navbar-nav">
-						<li class=nav-item>
-							<a v-on:click="commentsView" class="nav-link ms-3 pointer"><i class="fa fa-comments me-1" aria-hidden="true"></i>Comments</a>
-						</li>
-						<li class=nav-item>
-							<a v-on:click="profilePage" class="nav-link ms-3 pointer"><i class="fa fa-user me-1" aria-hidden="true"></i>Profile</a>
-						</li>
-						<li class=nav-item>
-							<a class="nav-link ms-3 pointer" v-on:click="logout"><i class="fa fa-sign-out me-1" aria-hidden="true"></i>Log out</a>
-						</li>
-					  </ul>
-				    </div>
-				  </div>
-				</nav>
+			<navbar/>
 				
 				<!-- ................................ COMMENTS ...................................... -->
 				
@@ -90,10 +66,26 @@ Vue.component("manager-trainer-comments" , {
 		axios
 			.get('/comments/allComments/')
 			.then(response => {
-				this.comments = response.data	
+				
 			})
 			.catch(error => {
 				console.log(error)
 			})
+			axios
+				.get('/manager/')
+				.then(response => {
+					this.manager = response.data
+					
+					axios
+						.get('/comments/getCommentsManager/' + response.data.facility)
+						.then(response => {
+							this.comments=response.data
+							console.log(response.data)
+						})
+						.catch(error => {
+							console.log(error)
+						})
+				
+				})
 	}
 });
