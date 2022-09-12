@@ -2,6 +2,9 @@ package controllers;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 
 import beans.Customer;
@@ -149,6 +152,21 @@ public class CustomerController {
 				return null;
 			}
 			
+		});
+		
+		get("/customer/getMyMembership/:id", (req,res) -> {
+			try {
+				Session session = req.session(true);
+				User loggedUser = session.attribute("user");
+				Customer customer = customerService.getCustomerByUsername(loggedUser.getUsername());
+				ArrayList<Membership> memberships = customer.getMembership();
+				System.out.println("ooooooooooooooooooooooooooooooooooooooooo");
+				return gson.toJson(customerService.getMyMembership(req.params("id"), memberships));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+					
 		});
 	}
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import beans.Customer;
@@ -88,6 +89,21 @@ public class CustomerService {
 
 	public ArrayList<Customer> getAllCustomers() throws JsonSyntaxException, IOException{
 		return customerDAO.getAllNonDeleted();
+	}
+
+	public Membership getMyMembership(String facilityName, ArrayList<Membership> memberships) {
+		// TODO Auto-generated method stub
+		Membership membership = null;
+		
+		for(Membership m : memberships) {
+			if(m.getFacility().equals(facilityName)) {
+				membership=m;
+				break;
+			}
+				
+		}
+		
+		return membership;
 	}
 
 }

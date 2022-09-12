@@ -23,7 +23,10 @@ Vue.component("f-page", {
 			errorMessage: '',
 			commentContent:'',
 			commentGrade:'',
-		  	mode: ''
+		  	mode: '',
+			editMAN: null,
+			activeAN: null,
+			joinButtonClicked:false
 			
 		}
 	}, 
@@ -115,6 +118,8 @@ Vue.component("f-page", {
 						<article v-if="showTrainings" class="article-content">
 							<h4>
 								New membership: {{this.newMembership.name}}
+								<h5 v-if="joinButtonClicked"><p>Appointments: {{activeAN}}</p></h5>
+								<h5 v-else><p>Appointments: {{this.newMembership.appointmentNumber}}</p></h5>
 							</h4>
 							<h4>Trainings</h4>
 <!-- .............................................FILTER TRAININGS ..............................................................................-->
@@ -155,7 +160,7 @@ Vue.component("f-page", {
 							  <p><label>Price: </label>{{t.price}}</p>
 							  <img v-bind:src="t.picture" class="img facility-hero-img" />
 							  <br></br>
-							  <button v-if="this.role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
+							  <button v-if="role == 'CUSTOMER' " v-on:click="joinTraining(t.name)" class="btn btn-primary">Join</button>
 							  
 				            </div>
 						  </article>
@@ -163,6 +168,7 @@ Vue.component("f-page", {
 								
 								<h4 v-for="am in activeMembership" v-if="am.facility == facility.name">
 								Active Membership: {{am.id}} 
+									<h5><p>Appointments: {{activeAN}}</p></h5>
 								</h4>
 								
 								<h4>Trainings</h4>
@@ -360,6 +366,30 @@ Vue.component("f-page", {
 			router.push("/newTraining")
 		},
 		joinTraining:function(training){
+			
+			this.joinButtonClicked = true
+			this.activeAN = this.activeAN -1
+		
+			let editedAppointments = {
+				name : this.editMAN.id,
+				customer: this.editMAN.customer,
+				price:  this.editMAN.price,
+				facility:  this.editMAN.facility,
+				appointmentNumber: this.activeAN
+			}
+		
+			axios
+					.post('/customer/switchMembership', JSON.stringify(editedAppointments))
+					.then(response => {
+						if(response.data == "")
+						console.log(response.data)
+					})
+					.catch(error => {
+						console.log(error)
+					});
+		
+		console.log(editedAppointments)
+		console.log(this.editMAN)
 		
 		console.log(this.customer)
 		    let Parameters =
@@ -528,6 +558,7 @@ Vue.component("f-page", {
 			.then(response => {
 				this.activeMembership = response.data
 				
+				console.log(this.activeMembership)
 			})
 			.catch(error => {
 				console.log(error)
@@ -544,6 +575,18 @@ Vue.component("f-page", {
 			.catch(error => {
 				console.log(error)
 			})
+			
+			axios
+				.get('/customer/getMyMembership/'  + window.localStorage.getItem('facilityId'))
+				.then(response => {
+					this.editMAN = response.data
+					this.activeAN = response.data.appointmentNumber
+					
+					console.log(response.data)
+				})
+				.catch(error => {
+					console.log(error)
+				})
 		}
 	
 	}
