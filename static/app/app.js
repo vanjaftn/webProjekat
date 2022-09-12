@@ -12,7 +12,7 @@ const NewTraining = {template: '<newTraining></newTraining>'}
 const TrainerTrainings = {template: '<trainerTrainings></trainerTrainings>'}
 const CustomerTrainings = {template: '<customerTrainings></customerTrainings>'}
 const AdminComments = { template: '<admin-comments></admin-comments>' }
-const ManagerTrainerComments = { template: '<manager-trainer-comments></manager-trainer-comments>' }
+const ManagerComments = { template: '<manager-comments></manager-comments>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -30,7 +30,7 @@ const router = new VueRouter({
 		{ path: '/trainerTrainings', component: TrainerTrainings},
 		{ path: '/customerTrainings', component: CustomerTrainings},
 		{ path: '/adminComments', component: AdminComments},
-		{ path: '/comments', component: ManagerTrainerComments}		
+		{ path: '/commentsManager', component: ManagerComments}		
 	  ]
 });
 

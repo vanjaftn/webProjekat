@@ -125,6 +125,18 @@ Vue.component("register-page", {
 					dateOfBirth: date, 
 					role: 'CUSTOMER'	
 				}
+				
+				let registratedCustomer = {
+					username: this.usernameRegistration,
+					password: this.passwordRegistration,
+					name: this.firstNameRegistration,
+					lastName: this.lastNameRegistration,
+					gender: gender,
+					dateOfBirth: date, 
+					role: 'CUSTOMER',
+					points: 0,
+					membership: []	
+				}
 				axios 
 	    			.post('/user/register', JSON.stringify(registratedUser))
 	    			.then(response => {
@@ -132,8 +144,14 @@ Vue.component("register-page", {
 	    					this.errorMessage = "Username already exists"
 						
 	    				} else {
-							window.location.href = "#/";
-							
+							axios
+								.post('/customer/createCustomer', JSON.stringify(registratedCustomer))
+								.then(response => {
+										if(response.data != null) {
+											console.log(response.data)
+										}
+								})
+							router.push("/")
 	    				}
 	    			})
 	    			.catch(error => {
