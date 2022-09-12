@@ -14,6 +14,7 @@ import beans.TrainingType;
 import dto.FacilitySearchDTO;
 import dto.FacilitySortDTO;
 import dto.TrainingFilterDTO;
+import dto.TrainingSearchDTO;
 import dto.TrainingSortDTO;
 import services.FacilityService;
 import services.TrainingService;
@@ -33,6 +34,18 @@ public class TrainingController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "";
+			}
+		});
+		post("/searchTrainings", (req,res) -> {
+			res.type("application/json");
+			
+			try {
+				TrainingSearchDTO parameters = gson.fromJson(req.body(), TrainingSearchDTO.class);
+				return gson.toJson(trainingService.getSearchedTrainingsTrainer(parameters));
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				return null;
 			}
 		});
 		post("/training/createNewTraining", (req,res) -> {

@@ -3,6 +3,7 @@ Vue.component("trainerTrainings", {
 		return {
 			jwt: window.localStorage.getItem('jwt'),
 			role: window.localStorage.getItem('role'),
+			searchName: '',
 			trainings: {},
 		  	trainer: {username:'', password:'', name:'', lastName:'', gender: {}, dateOfBirth: '', role:''},
 		  	parameter: '',
@@ -20,7 +21,7 @@ Vue.component("trainerTrainings", {
 						<article class="article-content">
 							<h4>Trainings</h4>
 <!-- .............................................FILTER TRAININGS ..............................................................................-->
-									<div class = "row" style="max-width: 400px;background-color: #a1d2e3; border-radius: 20px">
+									<div class = "row" style="max-width: 800px;background-color: #a1d2e3; border-radius: 20px">
 									<div class = "col-auto">
 										<label style="color: black;">Filter by training type</label></br>	
 										<input type="radio" name = "filter" @change="OnlyGymTrainingType($event)">
@@ -52,8 +53,17 @@ Vue.component("trainerTrainings", {
 										<input type="radio" name = "sort" @change="SortByFacilityDesc($event)">
 										<label style="color: black;">Facility name descending</label></br>
 										<button type="submit" v-on:click="sortTrainings" class="btn btn-primary">Sort</button>
-										</div>
-							</div>
+								</div>
+				            
+				            <!-- .............................................SEARCH ..............................................................................-->		
+								<div class = "col-auto">
+							    		<input v-model="searchName" v-on:keyup="enterPressedSearch" type="text" class="form-control" id="facilitiName" placeholder="Name...">
+							  		
+							    <button type="submit" v-on:click="searchFacilities" class="btn btn-primary">Search</button>
+								</div>
+						
+				            </div>
+							
 							<div class="single-training" v-for="t in trainings">
 				              <header>
 				                <p>{{t.name}}</p>
@@ -66,8 +76,8 @@ Vue.component("trainerTrainings", {
 							  <img v-bind:src="t.picture" class="img facility-hero-img" />
 							  
 				            </div>
-						  </article>
 						
+						  </article>
 					</section>
 				</div>
 			</div>
@@ -84,6 +94,32 @@ Vue.component("trainerTrainings", {
 					this.trainings = response.data
 					console.log(this.trainings)
 				})
+		},
+		enterPressedSearch: function (event) {
+			if (event.keyCode === 13) {
+				this.searchFacilities();
+			}
+		},
+		searchFacilities : function (event) {
+			
+				let searchParameters = {
+						name : this.searchName,
+						trainings : this.trainings		
+    			}
+
+    			axios 
+		    		.post('/searchTrainings', JSON.stringify(searchParameters))
+		    		.then(response => {
+		    		   this.trainings = response.data;
+						console.log(this.trainings)
+		    	})
+		},
+		resetSearch : function (event) {
+			this.searchName = '',
+			this.searchLocation = '',
+		    this.searchType = '',
+		    this.searchRating = '',
+			this.filterReset();
 		},
 		OnlyGymTrainingType: function(event){
 		

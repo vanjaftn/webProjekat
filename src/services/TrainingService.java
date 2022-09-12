@@ -21,6 +21,7 @@ import dao.TrainerDAO;
 import dao.TrainingDAO;
 import dao.TrainingHistoryDAO;
 import dto.TrainingFilterDTO;
+import dto.TrainingSearchDTO;
 import dto.TrainingSortDTO;
 
 public class TrainingService {
@@ -34,6 +35,7 @@ public class TrainingService {
 	private CustomerDAO customerDAO = new CustomerDAO("./data/customer.json");
 	private CustomerService customerService = new CustomerService(customerDAO);
 	private TrainingHistoryDAO trainingHistoryDAO = new TrainingHistoryDAO("./data/trainingHistory.json");
+
 	public TrainingService(TrainingDAO trainingDAO) {
 		super();
 		this.trainingDAO = trainingDAO;
@@ -42,6 +44,24 @@ public class TrainingService {
 	public String getTrainingTypes() throws JsonSyntaxException, IOException{
 		ArrayList<TrainingType> types = new ArrayList<TrainingType>(Arrays.asList(TrainingType.values()));
 		return gson.toJson(types);
+	}
+	
+	public ArrayList<Training> getSearchedTrainingsTrainer(TrainingSearchDTO searchParameters) throws JsonSyntaxException, IOException{
+		ArrayList<Training> allTrainings = searchParameters.getTrainings();
+		ArrayList<Training> searchedTrainings = new ArrayList<Training>();
+	
+		if (!searchParameters.getName().trim().isEmpty()) {
+			searchedTrainings.clear();
+			for (Training training : allTrainings) {
+				if (training.getSportsFacility().toLowerCase().contains(searchParameters.getName().toLowerCase()))
+					searchedTrainings.add(training);
+			}
+			
+			allTrainings.clear();
+			allTrainings.addAll(searchedTrainings);
+		}
+		
+		return searchedTrainings;
 	}
 	
 	public String getTrainingType(Training training) throws JsonSyntaxException, IOException{
@@ -88,9 +108,11 @@ public class TrainingService {
 		}
 		return trainerTrainings;
 	}
+	
 	public Training getTrainingByName(String trainingName) throws JsonSyntaxException, IOException{
 		return trainingDAO.getByID(trainingName);	
 	}
+	
 	public ArrayList<Training> getCustomerTrainings(String CustomerName)throws JsonSyntaxException, IOException{
 		
 		ArrayList<TrainingHistory> trainingsHistory = trainingHistoryDAO.getAll();
